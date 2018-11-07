@@ -1,0 +1,7 @@
+.chart-container {
+  width: 25%;
+}
+
+.chart-container > canvas {
+  max-width: 100%;
+}
