@@ -2,10 +2,45 @@
 
 // chart[data][datasets] should be created programmatically to allow for n months
 
+// Chart[label] should be array name (month name)
+
 // Allow option to render multiple charts
 
 // Function to properly format .csv info directly from Mint
 
+
+const chartColors = [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(75, 229, 35, 0.2)',
+              'rgba(184, 1, 115, 0.2)',
+              'rgba(246, 151, 54, 0.2)',
+              'rgba(97, 125, 231, 0.2)',
+              'rgba(205, 109, 202, 0.2)',
+              'rgba(40, 2, 127, 0.2)',
+              'rgba(135, 236, 217, 0.2)',
+              'rgba(69, 179, 193, 0.2)'
+            ];
+const chartBorders = [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(75, 229, 35, 1)',
+              'rgba(184, 1, 115, 1)',
+              'rgba(246, 151, 54, 1)',
+              'rgba(97, 125, 231, 1)',
+              'rgba(205, 109, 202, 1)',
+              'rgba(40, 2, 127, 1)',
+              'rgba(135, 236, 217, 1)',
+              'rgba(69, 179, 193, 1)'
+            ];
 
 const months = [];
 
@@ -100,151 +135,19 @@ var myChart = new Chart(ctx, {
     data: {
         //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
         datasets: [{
-            label: 'Spending',
-            //data: [],//[sept, sept1, Number(september[2]['Spending']), 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(75, 229, 35, 0.2)',
-              'rgba(184, 1, 115, 0.2)',
-              'rgba(246, 151, 54, 0.2)',
-              'rgba(97, 125, 231, 0.2)',
-              'rgba(205, 109, 202, 0.2)',
-              'rgba(40, 2, 127, 0.2)',
-              'rgba(135, 236, 217, 0.2)',
-              'rgba(69, 179, 193, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-              'rgba(75, 229, 35, 1)',
-              'rgba(184, 1, 115, 1)',
-              'rgba(246, 151, 54, 1)',
-              'rgba(97, 125, 231, 1)',
-              'rgba(205, 109, 202, 1)',
-              'rgba(40, 2, 127, 1)',
-              'rgba(135, 236, 217, 1)',
-              'rgba(69, 179, 193, 1)'
-            ],
+
             borderWidth: 1
         },
         {
-            label: 'Spending',
-            //data: [],//[sept, sept1, Number(september[2]['Spending']), 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(75, 229, 35, 0.2)',
-              'rgba(184, 1, 115, 0.2)',
-              'rgba(246, 151, 54, 0.2)',
-              'rgba(97, 125, 231, 0.2)',
-              'rgba(205, 109, 202, 0.2)',
-              'rgba(40, 2, 127, 0.2)',
-              'rgba(135, 236, 217, 0.2)',
-              'rgba(69, 179, 193, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-              'rgba(75, 229, 35, 1)',
-              'rgba(184, 1, 115, 1)',
-              'rgba(246, 151, 54, 1)',
-              'rgba(97, 125, 231, 1)',
-              'rgba(205, 109, 202, 1)',
-              'rgba(40, 2, 127, 1)',
-              'rgba(135, 236, 217, 1)',
-              'rgba(69, 179, 193, 1)'
-            ],
+
             borderWidth: 1
         },
         {
-            label: 'Spending',
-            //data: [],//[sept, sept1, Number(september[2]['Spending']), 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(75, 229, 35, 0.2)',
-              'rgba(184, 1, 115, 0.2)',
-              'rgba(246, 151, 54, 0.2)',
-              'rgba(97, 125, 231, 0.2)',
-              'rgba(205, 109, 202, 0.2)',
-              'rgba(40, 2, 127, 0.2)',
-              'rgba(135, 236, 217, 0.2)',
-              'rgba(69, 179, 193, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-              'rgba(75, 229, 35, 1)',
-              'rgba(184, 1, 115, 1)',
-              'rgba(246, 151, 54, 1)',
-              'rgba(97, 125, 231, 1)',
-              'rgba(205, 109, 202, 1)',
-              'rgba(40, 2, 127, 1)',
-              'rgba(135, 236, 217, 1)',
-              'rgba(69, 179, 193, 1)'
-            ],
+
             borderWidth: 1
         },
         {
-            label: 'Spending',
-            //data: [],//[sept, sept1, Number(september[2]['Spending']), 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(75, 229, 35, 0.2)',
-              'rgba(184, 1, 115, 0.2)',
-              'rgba(246, 151, 54, 0.2)',
-              'rgba(97, 125, 231, 0.2)',
-              'rgba(205, 109, 202, 0.2)',
-              'rgba(40, 2, 127, 0.2)',
-              'rgba(135, 236, 217, 0.2)',
-              'rgba(69, 179, 193, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-              'rgba(75, 229, 35, 1)',
-              'rgba(184, 1, 115, 1)',
-              'rgba(246, 151, 54, 1)',
-              'rgba(97, 125, 231, 1)',
-              'rgba(205, 109, 202, 1)',
-              'rgba(40, 2, 127, 1)',
-              'rgba(135, 236, 217, 1)',
-              'rgba(69, 179, 193, 1)'
-            ],
+
             borderWidth: 1
         }]
     },
@@ -331,8 +234,21 @@ function compileData(chart) {
         data.push(Number(current[x]['Spending']));
       }
     }
+
+    // Push this to myChart['data']['datasets']
+      // Build Object, push to myChart['data']['datasets'] 
+    /*           myChart['data']['datasets'][num]['data'] = data;
+              myChart['data']['datasets'][num]['label'] = key;
+              myChart['data']['datasets'][num]['backgroundColor'] = chartColors;
+              myChart['data']['datasets'][num]['borderColor'] = chartBorders;
+              */
+
+
     myChart['data']['datasets'][num]['data'] = data;
     myChart['data']['datasets'][num]['label'] = key;
+    myChart['data']['datasets'][num]['backgroundColor'] = chartColors;
+    myChart['data']['datasets'][num]['borderColor'] = chartBorders;
+
     num++;
 
     //console.log(data);
