@@ -1,4 +1,29 @@
+// TO-DO
+
+// chart[data][datasets] should be created programmatically to allow for n months
+
+// Allow option to render multiple charts
+
+// Function to properly format .csv info directly from Mint
+
+
 const months = [];
+
+const july = [
+  {Category: "Home", Spending: "$1,875.00"},
+  {Category: "Food & Dining", Spending: "$1,073.63"},
+  {Category: "Travel", Spending: "$331.77"},
+  {Category: "Shopping", Spending: "$277.20"},
+  {Category: "Entertainment", Spending: "$240.03"},
+  {Category: "Education", Spending: "$238.11"},
+  {Category: "Auto & Transport", Spending: "$234.66"},
+  {Category: "Fees & Charges", Spending: "$130.27"},
+  {Category: "Uncategorized", Spending: "$60.00"},
+  {Category: "Financial", Spending: "$46.63"},
+  {Category: "Business Services", Spending: "$41.67"},
+  {Category: "Health & Fitness", Spending: "$8.40"},
+  {Category: "Total", Spending: "$4,557.37"}
+];
 
 const august = [
   {Category: "Home", Spending: "$2,228.18"},
@@ -55,7 +80,8 @@ function fixSpending(arr) {
   }
 }
 
-months["august"] = august;//,
+months["july"] = july;
+months["august"] = august;
 months["september"] = september;
 months["october"] = october;
 
@@ -74,6 +100,43 @@ var myChart = new Chart(ctx, {
     data: {
         //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
         datasets: [{
+            label: 'Spending',
+            //data: [],//[sept, sept1, Number(september[2]['Spending']), 5, 2, 3],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(75, 229, 35, 0.2)',
+              'rgba(184, 1, 115, 0.2)',
+              'rgba(246, 151, 54, 0.2)',
+              'rgba(97, 125, 231, 0.2)',
+              'rgba(205, 109, 202, 0.2)',
+              'rgba(40, 2, 127, 0.2)',
+              'rgba(135, 236, 217, 0.2)',
+              'rgba(69, 179, 193, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(75, 229, 35, 1)',
+              'rgba(184, 1, 115, 1)',
+              'rgba(246, 151, 54, 1)',
+              'rgba(97, 125, 231, 1)',
+              'rgba(205, 109, 202, 1)',
+              'rgba(40, 2, 127, 1)',
+              'rgba(135, 236, 217, 1)',
+              'rgba(69, 179, 193, 1)'
+            ],
+            borderWidth: 1
+        },
+        {
             label: 'Spending',
             //data: [],//[sept, sept1, Number(september[2]['Spending']), 5, 2, 3],
             backgroundColor: [
@@ -251,22 +314,6 @@ function compileData(chart) {
         if (currentCategory === labels[x]) {
           match = true;
         }
-        // if label does not exist in months[key]
-          // splice labels: '0' into months[key]
-
-
-
-        //console.log(currentCategory);
-
-
-        //console.log(currentCategory);
-        //data.push(currentCategory);
-
-
-        // if not in labels
-        //console.log(labels[i]);
-        //if (labels[i])
-          // add 0 to data
       }
       if (!match) {
         months[key].splice(x, 0, {"Category": labels[x], "Spending": "0"});
@@ -274,29 +321,13 @@ function compileData(chart) {
 
     }
 
-      /*
-      if (!match) {
-        //console.log('nogo');
-        mismatch.push(x);
-        //months[key][i]['Category'] = labels[key];
-        //console.log(mismatch);
-        //console.log(months[key]);
-        months[key].splice(x, 0, {"Category": labels[x], "Spending": "0"});
-        //console.log(months[key]);
-      }
-*/
-      //console.log(months[key][11]);
-    //console.log(months[key]);
-
-    //console.log(labels);
-
     const current = months[key];
 
     for (let x in current) {
       //console.log(current[x]);
 
       if (current[x]['Category'] !== "Total"){
-        console.log(current[x]);
+        //console.log(current[x]);
         data.push(Number(current[x]['Spending']));
       }
     }
@@ -310,9 +341,6 @@ function compileData(chart) {
 
   }
 
-//console.log(labels);
-
-  //myChart['data']['labels'] = labels;
   chart.update();
 }
 compileData(myChart);
