@@ -77,21 +77,20 @@ var myChart = new Chart(ctx, {
             label: 'Spending',
             //data: [],//[sept, sept1, Number(september[2]['Spending']), 5, 2, 3],
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(75, 229, 35, 0.2)',
-                'rgba(184, 1, 115, 0.2)',
-                'rgba(246, 151, 54, 0.2)',
-                'rgba(97, 125, 231, 0.2)',
-                'rgba(205, 109, 202, 0.2)',
-                'rgba(40, 2, 127, 0.2)',
-                'rgba(135, 236, 217, 0.2)',
-                'rgba(69, 179, 193, 0.2)'
-
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(75, 229, 35, 0.2)',
+              'rgba(184, 1, 115, 0.2)',
+              'rgba(246, 151, 54, 0.2)',
+              'rgba(97, 125, 231, 0.2)',
+              'rgba(205, 109, 202, 0.2)',
+              'rgba(40, 2, 127, 0.2)',
+              'rgba(135, 236, 217, 0.2)',
+              'rgba(69, 179, 193, 0.2)'
             ],
             borderColor: [
               'rgba(255, 99, 132, 1)',
@@ -199,10 +198,6 @@ var myChart = new Chart(ctx, {
 
 
 function buildLabels(chart) {
-  // TO-DO
-  // Create Labels first
-  // If !exists in labels
-    // Add value of 0 to data
 
   let num = 0;
   const labels = [];
@@ -214,7 +209,7 @@ function buildLabels(chart) {
     for (let x in current) {
       //console.log(current[x]['Category']);
 
-      if (labels.indexOf(current[x]['Category']) === -1) {
+      if (labels.indexOf(current[x]['Category']) === -1 && current[x]['Category'] !== 'Total') {
         labels.push(current[x]['Category']);
       }
     }
@@ -300,7 +295,8 @@ function compileData(chart) {
     for (let x in current) {
       //console.log(current[x]);
 
-      if (current[x] !== "Total"){
+      if (current[x]['Category'] !== "Total"){
+        console.log(current[x]);
         data.push(Number(current[x]['Spending']));
       }
     }
