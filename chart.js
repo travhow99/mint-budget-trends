@@ -58,7 +58,6 @@ function fixSpending(arr) {
 months["august"] = august;//,
 months["september"] = september;
 months["october"] = october;
-//console.log(months);
 
 
 // Map arrow function to apply fixSpending()
@@ -83,15 +82,32 @@ var myChart = new Chart(ctx, {
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(75, 229, 35, 0.2)',
+                'rgba(184, 1, 115, 0.2)',
+                'rgba(246, 151, 54, 0.2)',
+                'rgba(97, 125, 231, 0.2)',
+                'rgba(205, 109, 202, 0.2)',
+                'rgba(40, 2, 127, 0.2)',
+                'rgba(135, 236, 217, 0.2)',
+                'rgba(69, 179, 193, 0.2)'
+
             ],
             borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(75, 229, 35, 1)',
+              'rgba(184, 1, 115, 1)',
+              'rgba(246, 151, 54, 1)',
+              'rgba(97, 125, 231, 1)',
+              'rgba(205, 109, 202, 1)',
+              'rgba(40, 2, 127, 1)',
+              'rgba(135, 236, 217, 1)',
+              'rgba(69, 179, 193, 1)'
             ],
             borderWidth: 1
         },
@@ -99,20 +115,36 @@ var myChart = new Chart(ctx, {
             label: 'Spending',
             //data: [],//[sept, sept1, Number(september[2]['Spending']), 5, 2, 3],
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(75, 229, 35, 0.2)',
+              'rgba(184, 1, 115, 0.2)',
+              'rgba(246, 151, 54, 0.2)',
+              'rgba(97, 125, 231, 0.2)',
+              'rgba(205, 109, 202, 0.2)',
+              'rgba(40, 2, 127, 0.2)',
+              'rgba(135, 236, 217, 0.2)',
+              'rgba(69, 179, 193, 0.2)'
             ],
             borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(75, 229, 35, 1)',
+              'rgba(184, 1, 115, 1)',
+              'rgba(246, 151, 54, 1)',
+              'rgba(97, 125, 231, 1)',
+              'rgba(205, 109, 202, 1)',
+              'rgba(40, 2, 127, 1)',
+              'rgba(135, 236, 217, 1)',
+              'rgba(69, 179, 193, 1)'
             ],
             borderWidth: 1
         },
@@ -120,20 +152,36 @@ var myChart = new Chart(ctx, {
             label: 'Spending',
             //data: [],//[sept, sept1, Number(september[2]['Spending']), 5, 2, 3],
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(75, 229, 35, 0.2)',
+              'rgba(184, 1, 115, 0.2)',
+              'rgba(246, 151, 54, 0.2)',
+              'rgba(97, 125, 231, 0.2)',
+              'rgba(205, 109, 202, 0.2)',
+              'rgba(40, 2, 127, 0.2)',
+              'rgba(135, 236, 217, 0.2)',
+              'rgba(69, 179, 193, 0.2)'
             ],
             borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(75, 229, 35, 1)',
+              'rgba(184, 1, 115, 1)',
+              'rgba(246, 151, 54, 1)',
+              'rgba(97, 125, 231, 1)',
+              'rgba(205, 109, 202, 1)',
+              'rgba(40, 2, 127, 1)',
+              'rgba(135, 236, 217, 1)',
+              'rgba(69, 179, 193, 1)'
             ],
             borderWidth: 1
         }]
@@ -160,37 +208,93 @@ function buildLabels(chart) {
   const labels = [];
 
   for (let key in months) {
+
+    //console.log(months[key]);
     const current = months[key];
     for (let x in current) {
+      //console.log(current[x]['Category']);
 
       if (labels.indexOf(current[x]['Category']) === -1) {
         labels.push(current[x]['Category']);
       }
     }
   }
+  // Sort function
+  //months[key].sort((a,b) => (a.Category > b.Category) ? 1 : ((b.Category > a.Category) ? -1 : 0));
+  //console.log(months[key]);
+  labels.sort();
+  console.log(labels);
+
 
   myChart['data']['labels'] = labels;
   chart.update();
 }
 buildLabels(myChart);
 
+
+
+
 // Build function for all months
 function compileData(chart) {
-  //console.log(chart['data']['labels']);
+  const labels = chart['data']['labels'];
   let num = 0;
   for (let key in months) {
-    const data = [];
-    //console.log(num);
 
-    // create var full of months[key] to use numeric approach
-// need to loop through chart['data']['labels']
-    let labels = chart['data']['labels'];
-    for (let i = 0; i < labels.length; i++) {
-      // if not in labels
-      console.log(months[i]);
-        // add 0 to data
+    // Sort function
+    months[key].sort((a,b) => (a.Category > b.Category) ? 1 : ((b.Category > a.Category) ? -1 : 0));
+
+    //console.log(months[key]);
+    const data = [];
+
+    // Loop through labels
+    for (let x = 0; x < labels.length; x++) {
+      let match = false;
+
+      // loop through months[key]
+      for (let i = 0; i < months[key].length; i++) {
+        let currentCategory = months[key][i]['Category'];
+        if (currentCategory === labels[x]) {
+          match = true;
+        }
+        // if label does not exist in months[key]
+          // splice labels: '0' into months[key]
+
+
+
+        //console.log(currentCategory);
+
+
+        //console.log(currentCategory);
+        //data.push(currentCategory);
+
+
+        // if not in labels
+        //console.log(labels[i]);
+        //if (labels[i])
+          // add 0 to data
+      }
+      if (!match) {
+        months[key].splice(x, 0, {"Category": labels[x], "Spending": "0"});
+      }
 
     }
+
+      /*
+      if (!match) {
+        //console.log('nogo');
+        mismatch.push(x);
+        //months[key][i]['Category'] = labels[key];
+        //console.log(mismatch);
+        //console.log(months[key]);
+        months[key].splice(x, 0, {"Category": labels[x], "Spending": "0"});
+        //console.log(months[key]);
+      }
+*/
+      //console.log(months[key][11]);
+    //console.log(months[key]);
+
+    //console.log(labels);
+
     const current = months[key];
 
     for (let x in current) {
@@ -204,7 +308,15 @@ function compileData(chart) {
     myChart['data']['datasets'][num]['label'] = key;
     num++;
 
+    //console.log(data);
+
+    console.log(months[key]);
+
   }
+
+//console.log(labels);
+
+  //myChart['data']['labels'] = labels;
   chart.update();
 }
 compileData(myChart);
