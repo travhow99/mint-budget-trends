@@ -131,25 +131,10 @@ for (let key in months) {
 
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
-    type: 'doughnut',
+    type: 'bar',
     data: {
         //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [{
-
-            borderWidth: 1
-        },
-        {
-
-            borderWidth: 1
-        },
-        {
-
-            borderWidth: 1
-        },
-        {
-
-            borderWidth: 1
-        }]
+        datasets: []
     },
     options: {
         scales: {
@@ -184,7 +169,7 @@ function buildLabels(chart) {
   //months[key].sort((a,b) => (a.Category > b.Category) ? 1 : ((b.Category > a.Category) ? -1 : 0));
   //console.log(months[key]);
   labels.sort();
-  console.log(labels);
+  //console.log(labels);
 
 
   myChart['data']['labels'] = labels;
@@ -236,24 +221,26 @@ function compileData(chart) {
     }
 
     // Push this to myChart['data']['datasets']
-      // Build Object, push to myChart['data']['datasets'] 
+      // Build Object, push to myChart['data']['datasets']
     /*           myChart['data']['datasets'][num]['data'] = data;
               myChart['data']['datasets'][num]['label'] = key;
               myChart['data']['datasets'][num]['backgroundColor'] = chartColors;
               myChart['data']['datasets'][num]['borderColor'] = chartBorders;
               */
 
+    dataObject = {};
+    dataObject['data'] = data;
+    dataObject['label'] = key;
+    dataObject['backgroundColor'] = chartColors;
+    dataObject['borderColor'] = chartBorders;
+    dataObject['borderWidth'] = 1;
 
-    myChart['data']['datasets'][num]['data'] = data;
-    myChart['data']['datasets'][num]['label'] = key;
-    myChart['data']['datasets'][num]['backgroundColor'] = chartColors;
-    myChart['data']['datasets'][num]['borderColor'] = chartBorders;
+
+
+    myChart['data']['datasets'].push(dataObject);
+
 
     num++;
-
-    //console.log(data);
-
-    console.log(months[key]);
 
   }
 
