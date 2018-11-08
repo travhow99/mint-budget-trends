@@ -1,14 +1,4 @@
-// TO-DO
-
-// chart[data][datasets] should be created programmatically to allow for n months
-
-// Chart[label] should be array name (month name)
-
-// Allow option to render multiple charts
-
-// Function to properly format .csv info directly from Mint
-
-
+/** Start doughnut */
 const chartColors = [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -106,15 +96,7 @@ const october = [
   {Category: "Total", Spending: "$3777.99"}
 ];
 
-function fixSpending(arr) {
-  for (let x = 0; x < arr.length; x++) {
-    let spending = arr[x]['Spending'];
-    spending = spending.substr(1,);
-    spending = spending.replace(',', '');
-    arr[x]['Spending'] = spending;
-  }
-}
-
+// Refector to make months into array?
 months["july"] = july;
 months["august"] = august;
 months["september"] = september;
@@ -127,11 +109,109 @@ for (let key in months) {
   fixSpending(months[key]);
 }
 
+
+// TO-DO
+
+// chart[data][datasets] should be created programmatically to allow for n months
+
+// Chart[label] should be array name (month name)
+
+// Allow option to render multiple charts
+
+// Function to properly format .csv info directly from Mint
+
+
+// Chart defaults
+// these are some defaults you can use for customizing your charts
+
+Chart.defaults.global.responsive = true;
+Chart.defaults.global.animationSteps = 50;
+Chart.defaults.global.tooltipYPadding = 16;
+Chart.defaults.global.tooltipCornerRadius = 0;
+Chart.defaults.global.tooltipTitleFontStyle = "normal";
+Chart.defaults.global.tooltipFillColor = "white";
+Chart.defaults.global.animationEasing = "easeOutBounce";
+Chart.defaults.global.scaleLineColor = "black";
+Chart.defaults.global.scaleFontSize = 16;
+Chart.defaults.global.showScale = false;
+Chart.defaults.global.pointDotStrokeWidth = 2;
+//Chart.defaults.global.title.legend = 'test';
+Chart.defaults.global.labelString = 'test';
+
+
+
+/** Line chart attempt */
+//this is data for the line charts
+
+var lineChartData = {
+  // This will be full of months
+  labels: ["Data 1", "Data 2", "Data 3", "Data 4", "Data 5", "Data 6", "Data 7", "Data 7", "Data 7", "Data 7", "Data 5", "Data 2", "Data 4", "Data 1"],
+  datasets: [{
+    fillColor: "#560620",
+    strokeColor: "white",
+    strokeLineWidth: 18,
+    pointColor: "white",
+    // Map through all data to find matching categories for label
+    label: 'default',
+    // mapped data
+    data: [20, 90, 140, 25, 53, 67, 47, 98, 30, 80, 20, 40, 10, 60],
+  }]
+};
+// then i just duplicated the chart specific options
+var cty = document.getElementById("lineChart").getContext("2d");
+var LineChartDemo = new Chart(cty, {
+  type: 'line',
+  label: 'test',
+  data: lineChartData,
+  pointDotRadius: 3,
+  bezierCurve: true,
+  datasetFill: true,
+  datasetStroke: true,
+  scaleShowVerticalLines: false,
+  scaleShowHorizontalLines: false,
+  pointDotStrokeWidth: 4,
+  fillColor: "rgba(220,220,220,0.2)",
+  scaleGridLineColor: "black",
+});
+
+
+const categoryBreakdown = [];
+
+// Building better Array of objects
+function categorize(months) {
+  let result = [];
+  for (let month in months) {
+    let obj = {}
+
+    console.log(months[month].length);
+    for (let x = 0; x < months[month].length; x++){
+
+      console.log(months[month]);
+
+      let category = months[month][x]['Category'];
+      let spending = months[month][x]['Spending']
+      //console.log(spending + category);
+      //let objectBuilder = '"' + months[month][cat]['Category'] + '": ' + months[month][cat]['Spending'];
+      obj[category] = spending;
+      //console.log(obj);
+    }
+    result.push(obj);
+
+  }
+  console.log(result);
+}
+categorize(months);
+//console.log(categoryBreakdown);
+
+
+
+/** Start doughnut */
+
 //console.log(september);
 
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'doughnut',
     data: {
         //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
         datasets: []
@@ -159,6 +239,9 @@ function buildLabels(chart) {
     const current = months[key];
     for (let x in current) {
       //console.log(current[x]['Category']);
+      if (current[x]['Category'] === undefined) {
+        console.log(current[x]);
+      }
 
       if (labels.indexOf(current[x]['Category']) === -1 && current[x]['Category'] !== 'Total') {
         labels.push(current[x]['Category']);
@@ -168,6 +251,7 @@ function buildLabels(chart) {
   // Sort function
   //months[key].sort((a,b) => (a.Category > b.Category) ? 1 : ((b.Category > a.Category) ? -1 : 0));
   //console.log(months[key]);
+  //console.log(labels);
   labels.sort();
   //console.log(labels);
 
@@ -238,7 +322,7 @@ function compileData(chart) {
 
 
     myChart['data']['datasets'].push(dataObject);
-
+    //console.log(myChart['data']);
 
     num++;
 
@@ -248,3 +332,18 @@ function compileData(chart) {
 }
 compileData(myChart);
 console.log(myChart['data']);
+
+
+
+
+
+// Functions
+
+function fixSpending(arr) {
+  for (let x = 0; x < arr.length; x++) {
+    let spending = arr[x]['Spending'];
+    spending = spending.substr(1,);
+    spending = spending.replace(',', '');
+    arr[x]['Spending'] = spending;
+  }
+}
