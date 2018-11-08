@@ -177,16 +177,15 @@ var LineChartDemo = new Chart(cty, {
 
 const categoryBreakdown = [];
 
+
+
 // Building better Array of objects
 function categorize(months) {
   let result = [];
   for (let month in months) {
     let obj = {}
 
-    console.log(months[month].length);
     for (let x = 0; x < months[month].length; x++){
-
-      console.log(months[month]);
 
       let category = months[month][x]['Category'];
       let spending = months[month][x]['Spending']
@@ -198,7 +197,7 @@ function categorize(months) {
     result.push(obj);
 
   }
-  console.log(result);
+  return result;
 }
 categorize(months);
 //console.log(categoryBreakdown);
@@ -334,7 +333,8 @@ compileData(myChart);
 console.log(myChart['data']);
 
 
-
+let proper = categorize(months);
+console.log(proper);
 
 
 // Functions
