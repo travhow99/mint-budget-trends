@@ -176,7 +176,7 @@ buildDropdown(spendingPairs);
 
 
 // Splits all months by categories
-function makeCategories(arr){
+function makeCategories(arr, chartObj){
   const categories = [];
   for (let x = 0; x < arr.length; x++) {
 
@@ -193,14 +193,15 @@ function makeCategories(arr){
     const {Total: total} = arr[x]
     const {Uncategorized: uncategorized} = arr[x]
 
-    categories.push(total);
+    categories.push(Number(total));
 
   //  console.log(home, food, transportation, education, uncategorized, total);
   }
-  // console.log(arr);
+  console.log(arr);
+  console.log(chartObj);
+  //lineChartData['datasets']['data'].push(categories);
+  chartObj.datasets[0].data = categories;
 }
-//makeCategories(spendingPairs);
-
 
 // TO-DO
 
@@ -249,6 +250,10 @@ var lineChartData = {
     //data: [20, 90, 140, 25, 53, 67, 47, 98, 30, 80, 20, 40, 10, 60],
   }]
 };
+makeCategories(spendingPairs, lineChartData);
+
+
+
 // then i just duplicated the chart specific options
 var cty = document.getElementById("lineChart").getContext("2d");
 var LineChartDemo = new Chart(cty, {
