@@ -1,3 +1,53 @@
+function fixSpending(arr) {
+  for (let x = 0; x < arr.length; x++) {
+    let spending = arr[x]['Spending'];
+    spending = spending.substr(1,);
+    spending = spending.replace(',', '');
+    arr[x]['Spending'] = spending;
+  }
+}
+
+// Building better Array of objects
+function categorize(months) {
+  let result = [];
+  for (let month in months) {
+    let obj = {}
+
+    for (let x = 0; x < months[month].length; x++){
+
+      let category = months[month][x]['Category'];
+      let spending = months[month][x]['Spending'];
+      //console.log(spending + category);
+      //let objectBuilder = '"' + months[month][cat]['Category'] + '": ' + months[month][cat]['Spending'];
+      obj[category] = spending;
+      //console.log(obj);
+    }
+    result.push(obj);
+
+  }
+  return result;
+}
+
+// Sort labels alphabetically
+function sortLabels(arr) {
+
+  /*
+  console.log(Object.keys(arr));
+  Object.keys(arr)
+        .sort()
+        .forEach(function(v, i) {
+            console.log(v, arr[v]);
+         });
+*/
+  console.log(arr);
+
+
+
+
+}
+
+
+
 /** Start doughnut */
 const chartColors = [
               'rgba(255, 99, 132, 0.2)',
@@ -105,9 +155,51 @@ months["october"] = october;
 
 // Map arrow function to apply fixSpending()
 for (let key in months) {
-
   fixSpending(months[key]);
 }
+
+// Setup months by {category: spending,} pairs
+let spendingPairs = categorize(months);
+console.log(spendingPairs);
+sortLabels(months);
+
+// Build #categoryDropdown
+function buildDropdown(arr) {
+  // Loop through array for Object.keys
+  for (let x = 0; x < arr.length; x++) {
+  //  console.log(Object.keys(arr[x]));
+  }
+  //console.log(arr);
+}
+buildDropdown(spendingPairs);
+
+
+
+// Splits all months by categories
+function makeCategories(arr){
+  const categories = [];
+  for (let x = 0; x < arr.length; x++) {
+
+    const {['Auto & Transport']: transportation} = arr[x];
+    const {['Business Services']: business} = arr[x];
+    const {Education: education} = arr[x];
+    const {Entertainment: entertainment} = arr[x];
+    const {['Fees & Charges']: fees} = arr[x];
+    const {Financial: financial} = arr[x];
+    const {['Food & Dining']: food} = arr[x];
+    const {['Health & Fitness']: fitness} = arr[x];
+    const {Home: home} = arr[x]
+    const {Shopping: shopping} = arr[x]
+    const {Total: total} = arr[x]
+    const {Uncategorized: uncategorized} = arr[x]
+
+    categories.push(total);
+
+  //  console.log(home, food, transportation, education, uncategorized, total);
+  }
+  // console.log(arr);
+}
+//makeCategories(spendingPairs);
 
 
 // TO-DO
@@ -154,7 +246,7 @@ var lineChartData = {
     // Map through all data to find matching categories for label
     label: 'default',
     // mapped data
-    data: [20, 90, 140, 25, 53, 67, 47, 98, 30, 80, 20, 40, 10, 60],
+    //data: [20, 90, 140, 25, 53, 67, 47, 98, 30, 80, 20, 40, 10, 60],
   }]
 };
 // then i just duplicated the chart specific options
@@ -173,35 +265,6 @@ var LineChartDemo = new Chart(cty, {
   fillColor: "rgba(220,220,220,0.2)",
   scaleGridLineColor: "black",
 });
-
-
-const categoryBreakdown = [];
-
-
-
-// Building better Array of objects
-function categorize(months) {
-  let result = [];
-  for (let month in months) {
-    let obj = {}
-
-    for (let x = 0; x < months[month].length; x++){
-
-      let category = months[month][x]['Category'];
-      let spending = months[month][x]['Spending']
-      //console.log(spending + category);
-      //let objectBuilder = '"' + months[month][cat]['Category'] + '": ' + months[month][cat]['Spending'];
-      obj[category] = spending;
-      //console.log(obj);
-    }
-    result.push(obj);
-
-  }
-  return result;
-}
-categorize(months);
-//console.log(categoryBreakdown);
-
 
 
 /** Start doughnut */
@@ -227,11 +290,34 @@ var myChart = new Chart(ctx, {
 });
 
 
-function buildLabels(chart) {
-
-  let num = 0;
+function buildLabels(chart, arr) {
   const labels = [];
+  console.log(arr);
+  for (let x = 0; x < arr.length; x++) {
+    // Sort labels
+    //console.log(x, arr[x]);
 
+    // Loop through object to add to labels
+    for (key in arr[x]){
+      //console.log(key);
+      if (key === undefined) {
+        //console.log(key);
+      }
+
+      if (labels.indexOf(key) === -1 && key !== 'Total') {
+        labels.push(key);
+      }
+    }
+
+
+
+  }
+  // Sort labels alphabetically
+  labels.sort();
+
+
+
+/** Old label builder
   for (let key in months) {
 
     //console.log(months[key]);
@@ -253,24 +339,141 @@ function buildLabels(chart) {
   //console.log(labels);
   labels.sort();
   //console.log(labels);
-
+*/
 
   myChart['data']['labels'] = labels;
   chart.update();
 }
-buildLabels(myChart);
+buildLabels(myChart, spendingPairs);
 
 
 
 
 // Build function for all months
-function compileData(chart) {
+function compileData(chart, arr) {
   const labels = chart['data']['labels'];
   let num = 0;
-  for (let key in months) {
+  console.log(labels);
+  console.log(arr);
 
-    // Sort function
-    months[key].sort((a,b) => (a.Category > b.Category) ? 1 : ((b.Category > a.Category) ? -1 : 0));
+
+
+  // Loop through labels
+  for (let i = 0; i < arr.length; i++) {
+    delete arr[i]['Total'];
+    console.log(arr[i]);
+
+    //console.log(labels);
+    // If object key doesn't exist
+      // push key: 0 pair
+      // Loop through labels
+    let match = false;
+
+    // loop through months[key]
+      console.log();
+      for (let x = 0; x < labels.length; x++) {
+        // If labels[x] not in object.keys
+        if (Object.keys(arr[i]).indexOf(labels[x]) === -1) {
+          arr[i][labels[x]] = 0;
+        }
+/*
+      let currentCategory = arr[key][i]['Category'];
+      if (currentCategory === labels[x]) {
+        match = true;
+      }
+      */
+    }
+/*
+    if (!match) {
+      arr[key].splice(x, 0, {"Category": labels[x], "Spending": "0"});
+    }
+*/
+  }
+  console.log(arr);
+
+
+
+  const orderedArray = [];
+  // loop through arr
+  for (let x = 0; x < arr.length; x++) {
+    // sort arr[x] by key
+    //console.log(arr[x]);
+    let obj = {};
+
+    Object.keys(arr[x])
+      .sort()
+      .forEach(function(v, i) {
+          //console.log(v, arr[x][v]);
+          let spending = arr[x][v];
+          obj[v] = spending;
+
+       });
+       //console.log(obj);
+       orderedArray.push(obj);
+       //orderedArray.push(obj[v]);
+
+       //arr[x].sort((a,b) => (a.Category > b.Category) ? 1 : ((b.Category > a.Category) ? -1 : 0));
+
+     //console.log(arr[x]);
+     //orderedArray.push(arr[x]);
+     //console.log(orderedArray);
+  }
+  //console.log(Object.keys(orderedArray[0]));
+
+  // Loop through arr to create data
+  for (let x = 0; x < orderedArray.length; x++) {
+    //console.log(orderedArray[x][key]);
+  //
+
+
+
+    console.log(Object.values(orderedArray[x]));
+    // Turn arr.values into Numbers
+    let numbers = Object.values(orderedArray[x]);
+/*
+    // Loop through labels
+    for (let x = 0; x < labels.length; x++) {
+      let match = false;
+
+      // loop through months[key]
+      for (let i = 0; i < arr[key].length; i++) {
+        let currentCategory = arr[key][i]['Category'];
+        if (currentCategory === labels[x]) {
+          match = true;
+        }
+      }
+      if (!match) {
+        arr[key].splice(x, 0, {"Category": labels[x], "Spending": "0"});
+      }
+
+    }
+*/
+    delete orderedArray[x]['Total'];
+
+    const data = numbers.map(x => Number(x));
+
+    console.log(Object.keys(orderedArray[x]));
+    //const data = [];
+    //data.push();
+
+    console.log(data);
+
+    dataObject = {};
+    dataObject['data'] = data;
+    dataObject['label'] = key;
+    dataObject['backgroundColor'] = chartColors;
+    dataObject['borderColor'] = chartBorders;
+    dataObject['borderWidth'] = 1;
+
+    myChart['data']['datasets'].push(dataObject);
+
+
+  }
+
+
+
+  /** Old Loop
+  for (let key in arr) {
 
     //console.log(months[key]);
     const data = [];
@@ -280,14 +483,14 @@ function compileData(chart) {
       let match = false;
 
       // loop through months[key]
-      for (let i = 0; i < months[key].length; i++) {
-        let currentCategory = months[key][i]['Category'];
+      for (let i = 0; i < arr[key].length; i++) {
+        let currentCategory = arr[key][i]['Category'];
         if (currentCategory === labels[x]) {
           match = true;
         }
       }
       if (!match) {
-        months[key].splice(x, 0, {"Category": labels[x], "Spending": "0"});
+        arr[key].splice(x, 0, {"Category": labels[x], "Spending": "0"});
       }
 
     }
@@ -309,7 +512,7 @@ function compileData(chart) {
               myChart['data']['datasets'][num]['label'] = key;
               myChart['data']['datasets'][num]['backgroundColor'] = chartColors;
               myChart['data']['datasets'][num]['borderColor'] = chartBorders;
-              */
+
 
     dataObject = {};
     dataObject['data'] = data;
@@ -320,30 +523,18 @@ function compileData(chart) {
 
 
 
-    myChart['data']['datasets'].push(dataObject);
     //console.log(myChart['data']);
 
     num++;
 
-  }
+  } */
 
   chart.update();
 }
-compileData(myChart);
+compileData(myChart, spendingPairs);
 console.log(myChart['data']);
 
 
-let proper = categorize(months);
-console.log(proper);
 
 
 // Functions
-
-function fixSpending(arr) {
-  for (let x = 0; x < arr.length; x++) {
-    let spending = arr[x]['Spending'];
-    spending = spending.substr(1,);
-    spending = spending.replace(',', '');
-    arr[x]['Spending'] = spending;
-  }
-}
