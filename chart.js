@@ -39,7 +39,7 @@ function sortLabels(arr) {
             console.log(v, arr[v]);
          });
 */
-  console.log(arr);
+  //console.log(arr);
 
 
 
@@ -176,8 +176,11 @@ buildDropdown(spendingPairs);
 
 
 // Splits all months by categories
-function makeCategories(arr, chartObj){
+function makeCategories(arr, chartObj, chart){
   const categories = [];
+  let $selected = $('#categoryDropdown').val();
+  //console.log($selected);
+
   for (let x = 0; x < arr.length; x++) {
 
     const {['Auto & Transport']: transportation} = arr[x];
@@ -193,14 +196,24 @@ function makeCategories(arr, chartObj){
     const {Total: total} = arr[x]
     const {Uncategorized: uncategorized} = arr[x]
 
-    categories.push(Number(total));
+    //const {['$selected']} = arr[x];
+
+    console.log(arr[x][$selected]);
+    categories.push(Number(arr[x][$selected]));
 
   //  console.log(home, food, transportation, education, uncategorized, total);
   }
-  console.log(arr);
-  console.log(chartObj);
+  console.log(categories);
+
   //lineChartData['datasets']['data'].push(categories);
+  chartObj.labels = Object.keys(months);
+
+  // programmatically get label (category) -> use html dropdown
+  chartObj.datasets[0].label = $selected;
   chartObj.datasets[0].data = categories;
+
+  chart.update();
+
 }
 
 // TO-DO
@@ -216,7 +229,7 @@ function makeCategories(arr, chartObj){
 
 // Chart defaults
 // these are some defaults you can use for customizing your charts
-
+/*
 Chart.defaults.global.responsive = true;
 Chart.defaults.global.animationSteps = 50;
 Chart.defaults.global.tooltipYPadding = 16;
@@ -230,7 +243,7 @@ Chart.defaults.global.showScale = false;
 Chart.defaults.global.pointDotStrokeWidth = 2;
 //Chart.defaults.global.title.legend = 'test';
 Chart.defaults.global.labelString = 'test';
-
+*/
 
 
 /** Line chart attempt */
@@ -238,7 +251,6 @@ Chart.defaults.global.labelString = 'test';
 
 var lineChartData = {
   // This will be full of months
-  labels: ["Data 1", "Data 2", "Data 3", "Data 4", "Data 5", "Data 6", "Data 7", "Data 7", "Data 7", "Data 7", "Data 5", "Data 2", "Data 4", "Data 1"],
   datasets: [{
     fillColor: "#560620",
     strokeColor: "white",
@@ -250,13 +262,12 @@ var lineChartData = {
     //data: [20, 90, 140, 25, 53, 67, 47, 98, 30, 80, 20, 40, 10, 60],
   }]
 };
-makeCategories(spendingPairs, lineChartData);
 
 
 
 // then i just duplicated the chart specific options
 var cty = document.getElementById("lineChart").getContext("2d");
-var LineChartDemo = new Chart(cty, {
+var lineChartDemo = new Chart(cty, {
   type: 'line',
   label: 'test',
   data: lineChartData,
@@ -270,6 +281,7 @@ var LineChartDemo = new Chart(cty, {
   fillColor: "rgba(220,220,220,0.2)",
   scaleGridLineColor: "black",
 });
+makeCategories(spendingPairs, lineChartData, lineChartDemo);
 
 
 /** Start doughnut */
@@ -293,6 +305,8 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+buildLabels(myChart, spendingPairs);
+
 
 
 function buildLabels(chart, arr) {
@@ -346,10 +360,19 @@ function buildLabels(chart, arr) {
   //console.log(labels);
 */
 
+
+  // Generate labels for lineChart input
+  for (let i = 0; i < labels.length; i++){
+    $('#categoryDropdown').append(`<option value="${labels[i]}">${labels[i]}</option`);
+  }
   myChart['data']['labels'] = labels;
   chart.update();
 }
-buildLabels(myChart, spendingPairs);
+
+// change function for option values (dropdown)
+$('#categoryDropdown').change(function(){
+  makeCategories(spendingPairs, lineChartData, lineChartDemo);
+});
 
 
 
