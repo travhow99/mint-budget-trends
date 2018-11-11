@@ -171,7 +171,7 @@ function buildDropdown(arr) {
   }
   //console.log(arr);
 }
-buildDropdown(spendingPairs);
+//buildDropdown(spendingPairs);
 
 
 
@@ -179,7 +179,9 @@ buildDropdown(spendingPairs);
 function makeCategories(arr, chartObj, chart){
   const categories = [];
   let $selected = $('#categoryDropdown').val();
-  //console.log($selected);
+  if (!$selected) {
+    $selected = 'Total';
+  };
 
   for (let x = 0; x < arr.length; x++) {
 
@@ -362,8 +364,9 @@ function buildLabels(chart, arr) {
 
 
   // Generate labels for lineChart input
+  $('#categoryDropdown').append('<option value="Total">Total</option>');
   for (let i = 0; i < labels.length; i++){
-    $('#categoryDropdown').append(`<option value="${labels[i]}">${labels[i]}</option`);
+    $('#categoryDropdown').append(`<option value="${labels[i]}">${labels[i]}</option>`);
   }
   myChart['data']['labels'] = labels;
   chart.update();
