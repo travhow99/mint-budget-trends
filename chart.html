@@ -15,14 +15,28 @@
 
 
 <body>
-  <div class="container">
-    <div class="col-sm-6">
-      <canvas id="myChart" width="400" height="400"></canvas>
-    </div>
-    <div class="col-sm-6">
-      <select id="categoryDropdown">
-      </select>
-      <canvas id="lineChart" width="400" height="400"></canvas>
+  <div class="container-fluid dasbhoard">
+    <div class="row">
+      <div class="col-sm-2 sidebar">
+        <ul class="menu">
+          <h3>Welcome.</h3>
+          <hr>
+          <li>home</li>
+          <li>monthly</li>
+          <li>by category</li>
+        </ul>
+      </div>
+      <div class="col-sm-10 doughnut">
+        <h1>Mint Budget Breakdown</h1>
+        <hr>
+        <h3>Monthly Spending Breakdown</h3>
+        <canvas id="myChart" width="400" height="400"></canvas>
+      </div>
+      <div class="col-sm-10 line">
+        <h3>Monthly Spending by Category</h3>
+        <select id="categoryDropdown"></select>
+        <canvas id="lineChart" width="400" height="400"></canvas>
+      </div>
     </div>
   </div>
 </body>
