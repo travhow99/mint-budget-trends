@@ -1,7 +1,37 @@
-.chart-container {
-  width: 25%;
+html, body {
+  height: 100%;
+}
+body {position:absolute}
+
+.sidebar {
+    background-color: #78e1a1!important;
+    height: 100%;
+    overflow: auto;
+
 }
 
-.chart-container > canvas {
-  max-width: 100%;
+ul.menu {
+    padding-left: 0;
+    list-style: none;
+}
+
+.dasbhoard {
+  background: white;
+}
+
+canvas {max-width: 100%}
+
+#categoryDropdown {
+    background: dodgerblue;
+    color: white;
+    height: 28px;
+    font-size: 18px;
+}
+
+@media (max-width: 767px) {
+  .sidebar {display: none}
+}
+
+.line {
+  display: none;
 }

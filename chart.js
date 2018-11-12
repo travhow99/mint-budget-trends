@@ -321,6 +321,11 @@ var lineChartDemo = new Chart(cty, {
               ticks: {
                   beginAtZero:true
               }
+          }],
+          xAxes: [{
+            ticks: {
+              autoSkip: false
+            }
           }]
       }
   }
