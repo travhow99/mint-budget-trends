@@ -1,3 +1,4 @@
+const totals = [];
 function fixSpending(arr) {
   for (let x = 0; x < arr.length; x++) {
     let spending = arr[x]['Spending'];
@@ -84,6 +85,21 @@ const chartBorders = [
 
 const months = [];
 
+const june = [
+  {Category: "Home", Spending: "$1,875.00"},
+  {Category: "Food & Dining", Spending: "$1,159.44"},
+  {Category: "Auto & Transport", Spending: "$257.49"},
+  {Category: "Shopping", Spending: "$210.71"},
+  {Category: "Education", Spending: "$210.11"},
+  {Category: "Fees & Charges", Spending: "$115.69"},
+  {Category: "Uncategorized", Spending: "$100.00"},
+  {Category: "Entertainment", Spending: "$84.80"},
+  {Category: "Business Services", Spending: "$59.95"},
+  {Category: "Pets", Spending: "$15.55"},
+  {Category: "Health & Fitness", Spending: "$10.00"},
+  {Category: "Total", Spending: "$4,098.74"},
+];
+
 const july = [
   {Category: "Home", Spending: "$1,875.00"},
   {Category: "Food & Dining", Spending: "$1,073.63"},
@@ -147,6 +163,7 @@ const october = [
 ];
 
 // Refector to make months into array?
+months["june"] = june;
 months["july"] = july;
 months["august"] = august;
 months["september"] = september;
@@ -177,33 +194,46 @@ function buildDropdown(arr) {
 
 // Splits all months by categories
 function makeCategories(arr, chartObj, chart){
+  console.log(arr.length, totals.length);
   const categories = [];
   let $selected = $('#categoryDropdown').val();
+  console.log(!$('#categoryDropdown').val());
   if (!$selected) {
     $selected = 'Total';
   };
+  if (totals.length === arr.length && $selected === 'Total') {
+    categories.push(...totals);
+  }
+  else {
+    for (let x = 0; x < arr.length; x++) {
 
-  for (let x = 0; x < arr.length; x++) {
+      let {['Auto & Transport']: transportation} = arr[x];
+      let {['Business Services']: business} = arr[x];
+      let {Education: education} = arr[x];
+      let {Entertainment: entertainment} = arr[x];
+      let {['Fees & Charges']: fees} = arr[x];
+      let {Financial: financial} = arr[x];
+      let {['Food & Dining']: food} = arr[x];
+      let {['Health & Fitness']: fitness} = arr[x];
+      let {Home: home} = arr[x]
+      let {Shopping: shopping} = arr[x]
+      let {Total: total} = arr[x]
+      let {Uncategorized: uncategorized} = arr[x]
 
-    const {['Auto & Transport']: transportation} = arr[x];
-    const {['Business Services']: business} = arr[x];
-    const {Education: education} = arr[x];
-    const {Entertainment: entertainment} = arr[x];
-    const {['Fees & Charges']: fees} = arr[x];
-    const {Financial: financial} = arr[x];
-    const {['Food & Dining']: food} = arr[x];
-    const {['Health & Fitness']: fitness} = arr[x];
-    const {Home: home} = arr[x]
-    const {Shopping: shopping} = arr[x]
-    const {Total: total} = arr[x]
-    const {Uncategorized: uncategorized} = arr[x]
+      //const {['$selected']} = arr[x];
 
-    //const {['$selected']} = arr[x];
+      if ($selected === 'Total' && totals.length !== arr.length) {
+        console.log(total);
+        totals.push(Number(total));
+      } else if ($selected === 'Total') {
+        categories.push(...totals);
+        return;
+      }
+      console.log(arr[x][$selected]);
+      categories.push(Number(arr[x][$selected]));
 
-    console.log(arr[x][$selected]);
-    categories.push(Number(arr[x][$selected]));
-
-  //  console.log(home, food, transportation, education, uncategorized, total);
+    //  console.log(home, food, transportation, education, uncategorized, total);
+    }
   }
   console.log(categories);
 
@@ -254,12 +284,15 @@ Chart.defaults.global.labelString = 'test';
 var lineChartData = {
   // This will be full of months
   datasets: [{
-    fillColor: "#560620",
-    strokeColor: "white",
+    //fillColor: "#560620",
+    strokeColor: "blue",
     strokeLineWidth: 18,
     pointColor: "white",
     // Map through all data to find matching categories for label
     label: 'default',
+    backgroundColor: 'transparent',
+    borderColor: 'lightblue',
+
     // mapped data
     //data: [20, 90, 140, 25, 53, 67, 47, 98, 30, 80, 20, 40, 10, 60],
   }]
@@ -275,13 +308,23 @@ var lineChartDemo = new Chart(cty, {
   data: lineChartData,
   pointDotRadius: 3,
   bezierCurve: true,
-  datasetFill: true,
+  datasetFill: false,
   datasetStroke: true,
   scaleShowVerticalLines: false,
   scaleShowHorizontalLines: false,
   pointDotStrokeWidth: 4,
-  fillColor: "rgba(220,220,220,0.2)",
-  scaleGridLineColor: "black",
+  //fillColor: "rgba(220,220,220,0.2)",
+  scaleGridLineColor: "blue",
+  options: {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero:true
+              }
+          }]
+      }
+  }
+
 });
 makeCategories(spendingPairs, lineChartData, lineChartDemo);
 
@@ -384,8 +427,8 @@ $('#categoryDropdown').change(function(){
 function compileData(chart, arr) {
   const labels = chart['data']['labels'];
   let num = 0;
-  console.log(labels);
-  console.log(arr);
+  //console.log(labels);
+  //console.log(arr);
 
 
 
@@ -420,7 +463,7 @@ function compileData(chart, arr) {
     }
 */
   }
-  console.log(arr);
+  //console.log(arr);
 
 
 
