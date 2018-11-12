@@ -614,6 +614,19 @@ compileData(myChart, spendingPairs);
 console.log(myChart['data']);
 
 
+// Dashboard controls
+$('#monthly').click(function() {
+  $('.line').hide();
+  $('.doughnut').show();
+});
+
+$('#category').click(function() {
+  $('.doughnut').hide();
+  $('.line').show();
+});
+
+
+
 
 
 // Functions

@@ -1,7 +1,26 @@
 html, body {
   height: 100%;
 }
-body {position:absolute}
+/** Fonts
+  font-family: 'Raleway', sans-serif;
+  font-family: 'Anton', sans-serif;
+*/
+body {
+  position:absolute;
+  font-family: 'Raleway', sans-serif;
+}
+
+* {
+  font-family: 'Raleway', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Anton', sans-serif!important;
+}
+
+.text-left {
+  text-align: left!important;
+}
 
 .sidebar {
     background-color: #78e1a1!important;
