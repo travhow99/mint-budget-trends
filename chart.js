@@ -1,3 +1,8 @@
+d3.csv("./budget_breakdown/march.csv").then(function(data) {
+  console.log(data);
+});
+
+
 const totals = [];
 function fixSpending(arr) {
   for (let x = 0; x < arr.length; x++) {
@@ -247,7 +252,6 @@ function makeCategories(arr, chartObj, chart){
   chart.update();
 
 }
-
 // TO-DO
 
 // chart[data][datasets] should be created programmatically to allow for n months
@@ -349,10 +353,26 @@ var myChart = new Chart(ctx, {
         scales: {
             yAxes: [{
                 ticks: {
-                    beginAtZero:true
+                    //beginAtZero:true
                 }
             }]
-        }
+        },
+        // Add percentages to tooltips
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              var dataset = data.datasets[tooltipItem.datasetIndex];
+              var meta = dataset._meta[Object.keys(dataset._meta)[0]];
+              var total = meta.total;
+              var currentValue = dataset.data[tooltipItem.index];
+              var percentage = parseFloat((currentValue/total*100).toFixed(1));
+              return currentValue + ' (' + percentage + '%)';
+            },
+            title: function(tooltipItem, data) {
+              return data.labels[tooltipItem[0].index];
+            }
+          }
+        },
     }
 });
 buildLabels(myChart, spendingPairs);
