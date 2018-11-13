@@ -20,14 +20,7 @@ function formatCSV() {
 formatCSV();
 */
 const totals = [];
-function fixSpending(arr) {
-  for (let x = 0; x < arr.length; x++) {
-    let spending = arr[x]['Spending'];
-    spending = spending.substr(1,);
-    spending = spending.replace(',', '');
-    arr[x]['Spending'] = spending;
-  }
-}
+
 
 // Building better Array of objects
 function categorize(months) {
@@ -182,13 +175,7 @@ const october = [
   {Category: "Total", Spending: "$3777.99"}
 ];
 */
-// Refector to make months into array?
-console.log(months['march']);
-months["june"] = june;
-months["july"] = july;
-months["august"] = august;
-months["september"] = september;
-months["october"] = october;
+
 
 
 // Map arrow function to apply fixSpending()
@@ -576,7 +563,7 @@ function compileData(chart, arr) {
 
     dataObject = {};
     dataObject['data'] = data;
-    dataObject['label'] = key;
+    //dataObject['label'] = key;
     dataObject['backgroundColor'] = chartColors;
     dataObject['borderColor'] = chartBorders;
     dataObject['borderWidth'] = 1;
