@@ -1,8 +1,24 @@
-d3.csv("./budget_breakdown/march.csv").then(function(data) {
-  console.log(data);
-});
+/* Need to reorganize to run data scripts first
+const months = [];
 
 
+const january = [];
+const february = [];
+const march = [];
+const april = [];
+const may = [];
+
+// Function needs to build months[month] arrays then call next functions
+function formatCSV() {
+  d3.csv("./budget_breakdown/march.csv").then(function(data) {
+    //const march = data;
+    march.push(...data);
+    console.log(march);
+  });
+  months["march"] = march;
+}
+formatCSV();
+*/
 const totals = [];
 function fixSpending(arr) {
   for (let x = 0; x < arr.length; x++) {
@@ -88,8 +104,7 @@ const chartBorders = [
               'rgba(69, 179, 193, 1)'
             ];
 
-const months = [];
-
+/*
 const june = [
   {Category: "Home", Spending: "$1,875.00"},
   {Category: "Food & Dining", Spending: "$1,159.44"},
@@ -166,8 +181,9 @@ const october = [
   {Category: "Business Services", Spending: "$11.10"},
   {Category: "Total", Spending: "$3777.99"}
 ];
-
+*/
 // Refector to make months into array?
+console.log(months['march']);
 months["june"] = june;
 months["july"] = july;
 months["august"] = august;
@@ -177,6 +193,7 @@ months["october"] = october;
 
 // Map arrow function to apply fixSpending()
 for (let key in months) {
+  console.log(months);
   fixSpending(months[key]);
 }
 
