@@ -19,19 +19,57 @@ function formatCSV() {
 }
 formatCSV();
 */
-const totals = [];
+
+const months = [];
 
 
+const january = [];
+const february = [];
+const march = [];
+const april = [];
+const may = [];
+const june = [];
+const july = [];
+const august = [];
+const september = [];
+const october = [];
+
+// Refector to make months into array?
+months["january"] = january;
+months["february"] = february;
+months["march"] = march;
+months["april"] = april;
+months["may"] = may;
+months["june"] = june;
+months["july"] = july;
+months["august"] = august;
+months["september"] = september;
+months["october"] = october;
+
+// Function to fix spending
+/*
+function fixSpending(obj) {
+  console.log(obj);
+  for (let x = 0; x < obj.length; x++) {
+    let spending = arr[x]['Spending'];
+    spending = spending.substr(1,);
+    spending = spending.replace(',', '');
+    obj[x]['Spending'] = spending;
+    console.log(obj[x]);
+  }
+
+}
+*/
 // Building better Array of objects
 function categorize(months) {
   let result = [];
-  for (let month in months) {
+  //for (let month in months) {
     let obj = {}
 
-    for (let x = 0; x < months[month].length; x++){
+    for (let x = 0; x < months.length; x++){
 
-      let category = months[month][x]['Category'];
-      let spending = months[month][x]['Spending'];
+      let category = months[x]['Category'];
+      let spending = months[x]['Spending'];
       //console.log(spending + category);
       //let objectBuilder = '"' + months[month][cat]['Category'] + '": ' + months[month][cat]['Spending'];
       obj[category] = spending;
@@ -39,9 +77,72 @@ function categorize(months) {
     }
     result.push(obj);
 
-  }
+  //}
+  console.log(result);
   return result;
 }
+/*
+$(".row").load("./budget_breakdown/march.csv");
+$.get("./budget_breakdown/march.csv", function(data) {
+  console.log(data);
+});
+
+let file = "./budget_breakdown/march.csv";
+Papa.parse(file, {
+  complete: function(results) {
+    console.log("Finished:", results.data);
+  }
+});
+
+*/
+
+// Build large dataBuilder function for call back function
+// Function needs to build months[month] arrays then call next functions
+function formatCSV(arr, callback) {
+
+  for (let key in arr) {
+    //console.log(key);
+
+    // Add promise
+    $.get("./budget_breakdown/" + key + ".csv", function(data) {
+
+      data = Papa.parse(data, {header: true, skipEmptyLines: true});
+      data = data['data'];
+
+      for (let x = 0; x < data.length; x++) {
+        let spending = data[x]['Spending'];
+
+        spending = spending.replace('$', '');
+        spending = spending.replace(',', '');
+        spending = Number(spending);
+        data[x]['Spending'] = spending;
+
+        //const march = data;
+        //march.push(...data);
+        //console.log(march);
+      }
+      arr[key].push(...data);
+
+    }).done(() => arr[key] = categorize(arr[key]));
+    //arr["march"] = march;
+
+  }
+  //console.log(arr);
+  //let spendingPairs = categorize(arr);
+  //console.log(spendingPairs);
+  //sortLabels(months);
+
+
+  let result = callback(months);
+  console.log(result);
+}
+formatCSV(months, categorize);//, makeCategories(spendingPairs, lineChartData, lineChartDemo));
+console.log(months);
+
+
+const totals = [];
+
+
 
 // Sort labels alphabetically
 function sortLabels(arr) {
@@ -179,15 +280,19 @@ const october = [
 
 
 // Map arrow function to apply fixSpending()
+/*
 for (let key in months) {
   console.log(months);
   fixSpending(months[key]);
 }
+*/
 
 // Setup months by {category: spending,} pairs
+/*
 let spendingPairs = categorize(months);
 console.log(spendingPairs);
 sortLabels(months);
+*/
 
 // Build #categoryDropdown
 function buildDropdown(arr) {
@@ -215,21 +320,6 @@ function makeCategories(arr, chartObj, chart){
   }
   else {
     for (let x = 0; x < arr.length; x++) {
-
-      let {['Auto & Transport']: transportation} = arr[x];
-      let {['Business Services']: business} = arr[x];
-      let {Education: education} = arr[x];
-      let {Entertainment: entertainment} = arr[x];
-      let {['Fees & Charges']: fees} = arr[x];
-      let {Financial: financial} = arr[x];
-      let {['Food & Dining']: food} = arr[x];
-      let {['Health & Fitness']: fitness} = arr[x];
-      let {Home: home} = arr[x]
-      let {Shopping: shopping} = arr[x]
-      let {Total: total} = arr[x]
-      let {Uncategorized: uncategorized} = arr[x]
-
-      //const {['$selected']} = arr[x];
 
       if ($selected === 'Total' && totals.length !== arr.length) {
         console.log(total);

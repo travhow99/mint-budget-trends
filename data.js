@@ -25,35 +25,44 @@ months["september"] = september;
 months["october"] = october;
 
 // Function to fix spending
-function fixSpending(arr) {
-  for (let x = 0; x < arr.length; x++) {
+/*
+function fixSpending(obj) {
+  console.log(obj);
+  for (let x = 0; x < obj.length; x++) {
     let spending = arr[x]['Spending'];
     spending = spending.substr(1,);
     spending = spending.replace(',', '');
-    arr[x]['Spending'] = spending;
-    console.log(arr[x]);
+    obj[x]['Spending'] = spending;
+    console.log(obj[x]);
   }
-}
 
+}
+*/
+
+
+// Build large dataBuilder function for call back function
 // Function needs to build months[month] arrays then call next functions
-function formatCSV() {
-  for (let key in months) {
+function formatCSV(arr, callback) {
+  for (let key in arr) {
     //console.log(key);
 
     d3.csv("./budget_breakdown/" + key + ".csv", function(data) {
-      //console.log(key, data);
-      months[key].push(data);
+      console.log();
+
+      let spending = data['Spending'];
+      spending = spending.replace('$', '');
+      spending = spending.replace(',', '');
+      spending = Number(spending);
+      data['Spending'] = spending;
+
+      arr[key].push(data);
       //const march = data;
       //march.push(...data);
       //console.log(march);
     });
-    //months["march"] = march;
+    //arr["march"] = march;
 
   }
-  for (let x in months) {
-    console.log(x);
-      fixSpending(months[x]);
-  }
-
+  callback(arr);
 }
-formatCSV();
+formatCSV(months, fixSpending);
