@@ -60,6 +60,58 @@ function fixSpending(obj) {
 
 }
 */
+/** Line chart attempt */
+//this is data for the line charts
+
+var lineChartData = {
+  // This will be full of months
+  datasets: [{
+    //fillColor: "#560620",
+    strokeColor: "blue",
+    strokeLineWidth: 18,
+    pointColor: "white",
+    // Map through all data to find matching categories for label
+    label: 'default',
+    backgroundColor: 'transparent',
+    borderColor: 'lightblue',
+
+    // mapped data
+    //data: [20, 90, 140, 25, 53, 67, 47, 98, 30, 80, 20, 40, 10, 60],
+  }]
+};
+
+// then i just duplicated the chart specific options
+var cty = document.getElementById("lineChart").getContext("2d");
+var lineChartDemo = new Chart(cty, {
+  type: 'line',
+  label: 'test',
+  data: lineChartData,
+  pointDotRadius: 3,
+  bezierCurve: true,
+  datasetFill: false,
+  datasetStroke: true,
+  scaleShowVerticalLines: false,
+  scaleShowHorizontalLines: false,
+  pointDotStrokeWidth: 4,
+  //fillColor: "rgba(220,220,220,0.2)",
+  scaleGridLineColor: "blue",
+  options: {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero:true
+              }
+          }],
+          xAxes: [{
+            ticks: {
+              autoSkip: false
+            }
+          }]
+      }
+  }
+
+});
+
 // Building better Array of objects
 function categorize(months) {
   let result = [];
@@ -78,7 +130,7 @@ function categorize(months) {
     result.push(obj);
 
   //}
-  console.log(result);
+  //console.log(result);
   return result;
 }
 /*
@@ -96,52 +148,10 @@ Papa.parse(file, {
 
 */
 
-// Build large dataBuilder function for call back function
-// Function needs to build months[month] arrays then call next functions
-function formatCSV(arr, callback) {
-
-  for (let key in arr) {
-    //console.log(key);
-
-    // Add promise
-    $.get("./budget_breakdown/" + key + ".csv", function(data) {
-
-      data = Papa.parse(data, {header: true, skipEmptyLines: true});
-      data = data['data'];
-
-      for (let x = 0; x < data.length; x++) {
-        let spending = data[x]['Spending'];
-
-        // Convert spending values to pure numbers
-        spending = spending.replace('$', '');
-        spending = spending.replace(',', '');
-        spending = Number(spending);
-        data[x]['Spending'] = spending;
-
-      }
-      arr[key].push(...data);
-
-    }).done(function() {
-      let spendingPairs = categorize(arr[key]);
-      console.log(spendingPairs);
-    //arr["march"] = march;
-
-    });
-  }
-  //console.log(arr);
-  //let spendingPairs = categorize(arr);
-  //console.log(spendingPairs);
-  //sortLabels(months);
+//console.log(months);
 
 
-  let result = callback(months);
-  console.log(result);
-}
-formatCSV(months, categorize);//, makeCategories(spendingPairs, lineChartData, lineChartDemo));
-console.log(months);
-
-
-const totals = [];
+let totals = [];
 
 
 
@@ -309,10 +319,10 @@ function buildDropdown(arr) {
 
 // Splits all months by categories
 function makeCategories(arr, chartObj, chart){
-  console.log(arr.length, totals.length);
+  console.log(typeof(arr), totals.length);
   const categories = [];
   let $selected = $('#categoryDropdown').val();
-  console.log(!$('#categoryDropdown').val());
+  //console.log(!$('#categoryDropdown').val());
   if (!$selected) {
     $selected = 'Total';
   };
@@ -323,19 +333,19 @@ function makeCategories(arr, chartObj, chart){
     for (let x = 0; x < arr.length; x++) {
 
       if ($selected === 'Total' && totals.length !== arr.length) {
-        console.log(total);
+        //console.log(total);
         totals.push(Number(total));
       } else if ($selected === 'Total') {
         categories.push(...totals);
         return;
       }
-      console.log(arr[x][$selected]);
+      //console.log(arr[x][$selected]);
       categories.push(Number(arr[x][$selected]));
 
     //  console.log(home, food, transportation, education, uncategorized, total);
     }
   }
-  console.log(categories);
+  //console.log(categories);
 
   //lineChartData['datasets']['data'].push(categories);
   chartObj.labels = Object.keys(months);
@@ -417,13 +427,13 @@ var myChart = new Chart(ctx, {
         },
     }
 });
-buildLabels(myChart, spendingPairs);
+//buildLabels(myChart, spendingPairs);
 
 
 
 function buildLabels(chart, arr) {
   const labels = [];
-  console.log(arr);
+  //console.log(arr);
   for (let x = 0; x < arr.length; x++) {
     // Sort labels
     //console.log(x, arr[x]);
@@ -432,7 +442,7 @@ function buildLabels(chart, arr) {
     for (key in arr[x]){
       //console.log(key);
       if (key === undefined) {
-        //console.log(key);
+        alert('undefined');
       }
 
       if (labels.indexOf(key) === -1 && key !== 'Total') {
@@ -443,8 +453,10 @@ function buildLabels(chart, arr) {
 
 
   }
+  console.log(labels);
   // Sort labels alphabetically
   labels.sort();
+  console.log(labels);
 
 
 
@@ -484,7 +496,7 @@ function buildLabels(chart, arr) {
 
 // change function for option values (dropdown)
 $('#categoryDropdown').change(function(){
-  makeCategories(spendingPairs, lineChartData, lineChartDemo);
+  //makeCategories(spendingPairs, lineChartData, lineChartDemo);
 });
 
 
@@ -492,6 +504,7 @@ $('#categoryDropdown').change(function(){
 
 // Build function for all months
 function compileData(chart, arr) {
+  //console.log(chart);
   const labels = chart['data']['labels'];
   let num = 0;
   //console.log(labels);
@@ -502,7 +515,7 @@ function compileData(chart, arr) {
   // Loop through labels
   for (let i = 0; i < arr.length; i++) {
     delete arr[i]['Total'];
-    console.log(arr[i]);
+    //console.log(arr[i]);
 
     //console.log(labels);
     // If object key doesn't exist
@@ -568,7 +581,7 @@ function compileData(chart, arr) {
 
 
 
-    console.log(Object.values(orderedArray[x]));
+    //console.log(Object.values(orderedArray[x]));
     // Turn arr.values into Numbers
     let numbers = Object.values(orderedArray[x]);
 /*
@@ -593,11 +606,11 @@ function compileData(chart, arr) {
 
     const data = numbers.map(x => Number(x));
 
-    console.log(Object.keys(orderedArray[x]));
+    //console.log(Object.keys(orderedArray[x]));
     //const data = [];
     //data.push();
 
-    console.log(data);
+    //console.log(data);
 
     dataObject = {};
     dataObject['data'] = data;
@@ -672,8 +685,8 @@ function compileData(chart, arr) {
 
   chart.update();
 }
-compileData(myChart, spendingPairs);
-console.log(myChart['data']);
+//compileData(myChart, spendingPairs);
+//console.log(myChart['data']);
 
 
 // Dashboard controls
@@ -686,6 +699,68 @@ $('#category').click(function() {
   $('.doughnut').hide();
   $('.line').show();
 });
+
+
+// Build large dataBuilder function for call back function
+// Function needs to build months[month] arrays then call next functions
+function formatCSV(arr, callback) {
+  //console.log(arr);
+  let count = 0;
+  const data = [];
+  for (let key in arr) {
+    //console.log(key);
+
+    // Add promise
+    $.get("./budget_breakdown/" + key + ".csv", function(data) {
+
+      data = Papa.parse(data, {header: true, skipEmptyLines: true});
+      data = data['data'];
+
+      for (let x = 0; x < data.length; x++) {
+        let spending = data[x]['Spending'];
+
+        // Convert spending values to pure numbers
+        spending = spending.replace('$', '');
+        spending = spending.replace(',', '');
+        spending = Number(spending);
+        data[x]['Spending'] = spending;
+
+      }
+      arr[key].push(...data);
+      console.log(arr[key]);
+      count++;
+    }).done(function() {
+      console.log(arr[key], count);
+      if (Object.keys(arr).length === count) {
+        for (let i in arr) {
+          console.log(arr);
+          // Build large loop
+          let spendingPairs = categorize(arr[i]);
+          console.log(spendingPairs[0]);
+          //console.log(spendingPairs[0]);
+          //months.push(spendingPairs);
+          makeCategories(spendingPairs[0], lineChartData, lineChartDemo);
+
+          buildLabels(myChart, spendingPairs);
+          //console.log(myChart['data']);
+          compileData(myChart, spendingPairs);
+
+        }
+
+      }
+
+    //arr["march"] = march;
+
+    });
+  }
+  console.log(arr);
+  //let spendingPairs = categorize(arr);
+  //console.log(spendingPairs);
+  //sortLabels(months);
+
+
+}
+formatCSV(months, categorize);//, makeCategories(spendingPairs, lineChartData, lineChartDemo));
 
 
 
