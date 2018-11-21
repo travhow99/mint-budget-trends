@@ -112,20 +112,21 @@ function formatCSV(arr, callback) {
       for (let x = 0; x < data.length; x++) {
         let spending = data[x]['Spending'];
 
+        // Convert spending values to pure numbers
         spending = spending.replace('$', '');
         spending = spending.replace(',', '');
         spending = Number(spending);
         data[x]['Spending'] = spending;
 
-        //const march = data;
-        //march.push(...data);
-        //console.log(march);
       }
       arr[key].push(...data);
 
-    }).done(() => arr[key] = categorize(arr[key]));
+    }).done(function() {
+      let spendingPairs = categorize(arr[key]);
+      console.log(spendingPairs);
     //arr["march"] = march;
 
+    });
   }
   //console.log(arr);
   //let spendingPairs = categorize(arr);
@@ -376,60 +377,7 @@ Chart.defaults.global.labelString = 'test';
 */
 
 
-/** Line chart attempt */
-//this is data for the line charts
 
-var lineChartData = {
-  // This will be full of months
-  datasets: [{
-    //fillColor: "#560620",
-    strokeColor: "blue",
-    strokeLineWidth: 18,
-    pointColor: "white",
-    // Map through all data to find matching categories for label
-    label: 'default',
-    backgroundColor: 'transparent',
-    borderColor: 'lightblue',
-
-    // mapped data
-    //data: [20, 90, 140, 25, 53, 67, 47, 98, 30, 80, 20, 40, 10, 60],
-  }]
-};
-
-
-
-// then i just duplicated the chart specific options
-var cty = document.getElementById("lineChart").getContext("2d");
-var lineChartDemo = new Chart(cty, {
-  type: 'line',
-  label: 'test',
-  data: lineChartData,
-  pointDotRadius: 3,
-  bezierCurve: true,
-  datasetFill: false,
-  datasetStroke: true,
-  scaleShowVerticalLines: false,
-  scaleShowHorizontalLines: false,
-  pointDotStrokeWidth: 4,
-  //fillColor: "rgba(220,220,220,0.2)",
-  scaleGridLineColor: "blue",
-  options: {
-      scales: {
-          yAxes: [{
-              ticks: {
-                  beginAtZero:true
-              }
-          }],
-          xAxes: [{
-            ticks: {
-              autoSkip: false
-            }
-          }]
-      }
-  }
-
-});
-makeCategories(spendingPairs, lineChartData, lineChartDemo);
 
 
 /** Start doughnut */
