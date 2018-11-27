@@ -20,6 +20,8 @@ function formatCSV() {
 formatCSV();
 */
 
+var test = "<?php echo $test ?>";
+
 const months = [];
 
 
@@ -727,10 +729,8 @@ function formatCSV(arr, callback) {
 
       }
       arr[key].push(...data);
-      console.log(arr[key]);
       count++;
     }).done(function() {
-      console.log(arr[key], count);
       if (Object.keys(arr).length === count) {
         for (let i in arr) {
           console.log(arr);
