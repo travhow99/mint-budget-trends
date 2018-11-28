@@ -1,5 +1,5 @@
 const months = [];
-
+console.log('test');
 
 const january = [];
 const february = [];
@@ -45,9 +45,38 @@ function fixSpending(obj) {
 function formatCSV(arr, callback) {
   for (let key in arr) {
     //console.log(key);
+    let file = "./budget_breakdown/" + key + ".csv";
 
+    data = Papa.parse(file, {header: true, skipEmptyLines: true});
+    console.log(data);
+
+    data = data['data'];
+
+/*
+    Papa.parsePromise = function(file) {
+      return new Promise(function(complete, error) {
+        Papa.parse(file, {complete, error});
+      });
+    };
+    Papa.parsePromise(file)
+                                        .then(function(results) {console.log(results); });
+
+
+                                        */
+    /*
+    ("./budget_breakdown/" + key + ".csv", {
+    	complete: function(results) {
+    		console.log(results);
+    	}
+      */
+    }
+
+
+
+
+/* d3 csv
     d3.csv("./budget_breakdown/" + key + ".csv", function(data) {
-      console.log();
+      console.log(key);
 
       let spending = data['Spending'];
       spending = spending.replace('$', '');
@@ -60,9 +89,10 @@ function formatCSV(arr, callback) {
       //march.push(...data);
       //console.log(march);
     });
+*/
     //arr["march"] = march;
 
   }
-  callback(arr);
-}
-formatCSV(months, fixSpending);
+  //callback(arr);
+
+formatCSV(months);

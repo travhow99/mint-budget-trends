@@ -37,11 +37,11 @@ ul.menu {
   background: white;
 }
 
-canvas {max-width: 100%}
+canvas {max-width: 50%}
 
-#categoryDropdown {
+select {
     background: dodgerblue;
-    color: white;
+    color: white!important;
     height: 28px;
     font-size: 18px;
 }

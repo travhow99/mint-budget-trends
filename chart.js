@@ -21,6 +21,7 @@ formatCSV();
 */
 
 const months = [];
+const labels = [];
 
 
 const january = [];
@@ -432,7 +433,6 @@ var myChart = new Chart(ctx, {
 
 
 function buildLabels(chart, arr) {
-  const labels = [];
   //console.log(arr);
   for (let x = 0; x < arr.length; x++) {
     // Sort labels
@@ -619,7 +619,7 @@ function compileData(chart, arr) {
     dataObject['borderColor'] = chartBorders;
     dataObject['borderWidth'] = 1;
 
-    myChart['data']['datasets'].push(dataObject);
+    myChart['data']['datasets'][0] = dataObject;
 
 
   }
@@ -700,21 +700,33 @@ $('#category').click(function() {
   $('.line').show();
 });
 
+function buildMonthDropdown() {
+  for (let key in months){
+    console.log(key);
+    $('#monthDropdown').append(`<option value="${key}">${key}</option>`);
+  }
+}
+buildMonthDropdown();
 
 // Build large dataBuilder function for call back function
 // Function needs to build months[month] arrays then call next functions
 function formatCSV(arr, callback) {
   //console.log(arr);
+  let $selected = ($('#monthDropdown').val()) ? $('#monthDropdown').val() : 'january';
   let count = 0;
   const data = [];
-  for (let key in arr) {
+  console.log($selected);
+  //for (let key in arr) {
+
     //console.log(key);
 
     // Add promise
-    $.get("./budget_breakdown/" + key + ".csv", function(data) {
+    $.get("./budget_breakdown/" + $selected + ".csv", function(data) {
 
       data = Papa.parse(data, {header: true, skipEmptyLines: true});
       data = data['data'];
+      console.log(data);
+
 
       for (let x = 0; x < data.length; x++) {
         let spending = data[x]['Spending'];
@@ -726,16 +738,17 @@ function formatCSV(arr, callback) {
         data[x]['Spending'] = spending;
 
       }
-      arr[key].push(...data);
-      console.log(arr[key]);
+      console.log(typeof(arr), $selected, arr[$selected]);
+      arr[$selected].push(...data);
+      console.log(arr[$selected]);
       count++;
     }).done(function() {
-      console.log(arr[key], count);
-      if (Object.keys(arr).length === count) {
-        for (let i in arr) {
+      console.log(arr[$selected], count);
+    //  if (Object.keys(arr).length === count) {
+        //for (let i in arr) {
           console.log(arr);
           // Build large loop
-          let spendingPairs = categorize(arr[i]);
+          let spendingPairs = categorize(arr[$selected]);
           console.log(spendingPairs[0]);
           //console.log(spendingPairs[0]);
           //months.push(spendingPairs);
@@ -745,14 +758,14 @@ function formatCSV(arr, callback) {
           //console.log(myChart['data']);
           compileData(myChart, spendingPairs);
 
-        }
+        });
 
-      }
+    //  }
 
     //arr["march"] = march;
 
-    });
-  }
+
+
   console.log(arr);
   //let spendingPairs = categorize(arr);
   //console.log(spendingPairs);
@@ -761,7 +774,11 @@ function formatCSV(arr, callback) {
 
 }
 formatCSV(months, categorize);//, makeCategories(spendingPairs, lineChartData, lineChartDemo));
-
+// change function for option values (dropdown)
+$('#monthDropdown').change(function(){
+  //makeCategories(spendingPairs, lineChartData, lineChartDemo);
+  formatCSV(months, categorize);
+});
 
 
 
