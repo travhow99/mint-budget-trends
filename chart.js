@@ -433,17 +433,13 @@ var myChart = new Chart(ctx, {
 
 
 function buildLabels(chart, arr) {
-  //console.log(arr);
+  console.log(arr);
   for (let x = 0; x < arr.length; x++) {
     // Sort labels
     //console.log(x, arr[x]);
 
     // Loop through object to add to labels
     for (key in arr[x]){
-      //console.log(key);
-      if (key === undefined) {
-        alert('undefined');
-      }
 
       if (labels.indexOf(key) === -1 && key !== 'Total') {
         labels.push(key);
@@ -738,9 +734,7 @@ function formatCSV(arr, callback) {
         data[x]['Spending'] = spending;
 
       }
-      console.log(typeof(arr), $selected, arr[$selected]);
       arr[$selected].push(...data);
-      console.log(arr[$selected]);
       count++;
     }).done(function() {
       console.log(arr[$selected], count);
@@ -752,9 +746,18 @@ function formatCSV(arr, callback) {
           console.log(spendingPairs[0]);
           //console.log(spendingPairs[0]);
           //months.push(spendingPairs);
-          makeCategories(spendingPairs[0], lineChartData, lineChartDemo);
+          //makeCategories(spendingPairs[0], lineChartData, lineChartDemo);
 
-          buildLabels(myChart, spendingPairs);
+
+
+          //buildLabels(myChart, spendingPairs[0]);
+          let categories = Object.keys(spendingPairs[0]);
+          console.log(categories);
+          //delete arr[i]['Total'];
+          categories.splice(categories.indexOf('Total', 1));
+          //console.log(Object.keys(spendingPairs[0]));
+          myChart['data']['labels'] = categories.sort();
+
           //console.log(myChart['data']);
           compileData(myChart, spendingPairs);
 
