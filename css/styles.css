@@ -1,7 +1,25 @@
 html, body {
   height: 100%;
 }
-body {position:absolute}
+/** Fonts
+  font-family: 'Raleway', sans-serif;
+  font-family: 'Anton', sans-serif;
+*/
+body {
+  font-family: 'Raleway', sans-serif;
+}
+
+* {
+  font-family: 'Raleway', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Anton', sans-serif!important;
+}
+
+.text-left {
+  text-align: left!important;
+}
 
 .sidebar {
     background-color: #78e1a1!important;
@@ -19,11 +37,11 @@ ul.menu {
   background: white;
 }
 
-canvas {max-width: 100%}
+canvas {max-width: 50%}
 
-#categoryDropdown {
+select {
     background: dodgerblue;
-    color: white;
+    color: white!important;
     height: 28px;
     font-size: 18px;
 }
