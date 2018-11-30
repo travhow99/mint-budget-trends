@@ -1,24 +1,3 @@
-/* Need to reorganize to run data scripts first
-const months = [];
-
-
-const january = [];
-const february = [];
-const march = [];
-const april = [];
-const may = [];
-
-// Function needs to build months[month] arrays then call next functions
-function formatCSV() {
-  d3.csv("./budget_breakdown/march.csv").then(function(data) {
-    //const march = data;
-    march.push(...data);
-    console.log(march);
-  });
-  months["march"] = march;
-}
-formatCSV();
-*/
 
 const months = [];
 const labels = [];
@@ -47,20 +26,6 @@ months["august"] = august;
 months["september"] = september;
 months["october"] = october;
 
-// Function to fix spending
-/*
-function fixSpending(obj) {
-  console.log(obj);
-  for (let x = 0; x < obj.length; x++) {
-    let spending = arr[x]['Spending'];
-    spending = spending.substr(1,);
-    spending = spending.replace(',', '');
-    obj[x]['Spending'] = spending;
-    console.log(obj[x]);
-  }
-
-}
-*/
 /** Line chart attempt */
 //this is data for the line charts
 
@@ -134,23 +99,6 @@ function categorize(months) {
   //console.log(result);
   return result;
 }
-/*
-$(".row").load("./budget_breakdown/march.csv");
-$.get("./budget_breakdown/march.csv", function(data) {
-  console.log(data);
-});
-
-let file = "./budget_breakdown/march.csv";
-Papa.parse(file, {
-  complete: function(results) {
-    console.log("Finished:", results.data);
-  }
-});
-
-*/
-
-//console.log(months);
-
 
 let totals = [];
 
@@ -158,7 +106,6 @@ let totals = [];
 
 // Sort labels alphabetically
 function sortLabels(arr) {
-
   /*
   console.log(Object.keys(arr));
   Object.keys(arr)
@@ -168,9 +115,6 @@ function sortLabels(arr) {
          });
 */
   //console.log(arr);
-
-
-
 
 }
 
@@ -210,101 +154,6 @@ const chartBorders = [
               'rgba(69, 179, 193, 1)'
             ];
 
-/*
-const june = [
-  {Category: "Home", Spending: "$1,875.00"},
-  {Category: "Food & Dining", Spending: "$1,159.44"},
-  {Category: "Auto & Transport", Spending: "$257.49"},
-  {Category: "Shopping", Spending: "$210.71"},
-  {Category: "Education", Spending: "$210.11"},
-  {Category: "Fees & Charges", Spending: "$115.69"},
-  {Category: "Uncategorized", Spending: "$100.00"},
-  {Category: "Entertainment", Spending: "$84.80"},
-  {Category: "Business Services", Spending: "$59.95"},
-  {Category: "Pets", Spending: "$15.55"},
-  {Category: "Health & Fitness", Spending: "$10.00"},
-  {Category: "Total", Spending: "$4,098.74"},
-];
-
-const july = [
-  {Category: "Home", Spending: "$1,875.00"},
-  {Category: "Food & Dining", Spending: "$1,073.63"},
-  {Category: "Travel", Spending: "$331.77"},
-  {Category: "Shopping", Spending: "$277.20"},
-  {Category: "Entertainment", Spending: "$240.03"},
-  {Category: "Education", Spending: "$238.11"},
-  {Category: "Auto & Transport", Spending: "$234.66"},
-  {Category: "Fees & Charges", Spending: "$130.27"},
-  {Category: "Uncategorized", Spending: "$60.00"},
-  {Category: "Financial", Spending: "$46.63"},
-  {Category: "Business Services", Spending: "$41.67"},
-  {Category: "Health & Fitness", Spending: "$8.40"},
-  {Category: "Total", Spending: "$4,557.37"}
-];
-
-const august = [
-  {Category: "Home", Spending: "$2,228.18"},
-  {Category: "Food & Dining", Spending: "$596.61"},
-  {Category: "Auto & Transport", Spending: "$233.33"},
-  {Category: "Education", Spending: "$210.11"},
-  {Category: "Travel", Spending: "$170.08"},
-  {Category: "Fees & Charges", Spending: "$141.90"},
-  {Category: "Uncategorized", Spending: "$120.00"},
-  {Category: "Shopping", Spending: "$103.99"},
-  {Category: "Entertainment", Spending: "$96.98"},
-  {Category: "Health & Fitness", Spending: "$42.94"},
-  {Category: "Business Services", Spending: "$39.91"},
-  {Category: "Bills & Utilities", Spending: "$31.95"},
-  {Category: "Total", Spending: "$4,015.98"}
-];
-
-const september = [
-  {Category: "Uncategorized", Spending: "$2185.00"},
-  {Category: "Home", Spending: "$1100.00"},
-  {Category: "Food & Dining", Spending: "$852.02"},
-  {Category: "Auto & Transport", Spending: "$571.58"},
-  {Category: "Education", Spending: "$210.11"},
-  {Category: "Shopping", Spending: "$194.59"},
-  {Category: "Entertainment", Spending: "$159.94"},
-  {Category: "Fees & Charges", Spending: "$116.52"},
-  {Category: "Bills & Utilities", Spending: "$31.95"},
-  {Category: "Business Services", Spending: "$14.00"},
-  {Category: "Total", Spending: "$5435.71"}
-];
-
-const october = [
-  {Category: "Home", Spending: "$1413.75"},
-  {Category: "Food & Dining", Spending: "$1088.75"},
-  {Category: "Shopping", Spending: "$349.49"},
-  {Category: "Auto & Transport", Spending: "$226.49"},
-  {Category: "Education", Spending: "$210.11"},
-  {Category: "Fees & Charges", Spending: "$116.73"},
-  {Category: "Health & Fitness", Spending: "$113.38"},
-  {Category: "Entertainment", Spending: "$89.00"},
-  {Category: "Uncategorized", Spending: "$73.74"},
-  {Category: "Bills & Utilities", Spending: "$56.95"},
-  {Category: "Personal Care", Spending: "$28.50"},
-  {Category: "Business Services", Spending: "$11.10"},
-  {Category: "Total", Spending: "$3777.99"}
-];
-*/
-
-
-
-// Map arrow function to apply fixSpending()
-/*
-for (let key in months) {
-  console.log(months);
-  fixSpending(months[key]);
-}
-*/
-
-// Setup months by {category: spending,} pairs
-/*
-let spendingPairs = categorize(months);
-console.log(spendingPairs);
-sortLabels(months);
-*/
 
 // Build #categoryDropdown
 function buildDropdown(arr) {
@@ -334,19 +183,16 @@ function makeCategories(arr, chartObj, chart){
     for (let x = 0; x < arr.length; x++) {
 
       if ($selected === 'Total' && totals.length !== arr.length) {
-        //console.log(total);
         totals.push(Number(total));
       } else if ($selected === 'Total') {
         categories.push(...totals);
         return;
       }
-      //console.log(arr[x][$selected]);
-      categories.push(Number(arr[x][$selected]));
 
-    //  console.log(home, food, transportation, education, uncategorized, total);
+      categories.push(Number(arr[x][$selected]));
     }
   }
-  //console.log(categories);
+
 
   //lineChartData['datasets']['data'].push(categories);
   chartObj.labels = Object.keys(months);
@@ -405,9 +251,7 @@ var myChart = new Chart(ctx, {
     options: {
         scales: {
             yAxes: [{
-                ticks: {
-                    //beginAtZero:true
-                }
+                display: false,
             }]
         },
         // Add percentages to tooltips
@@ -712,11 +556,12 @@ function formatCSV(arr, callback) {
   let count = 0;
   const data = [];
   console.log($selected);
-  //for (let key in arr) {
 
-    //console.log(key);
+  // TO-DO
+  // if arr[$selected] !empty
+    // skip $.get and run function
 
-    // Add promise
+
     $.get("./budget_breakdown/" + $selected + ".csv", function(data) {
 
       data = Papa.parse(data, {header: true, skipEmptyLines: true});
@@ -744,13 +589,6 @@ function formatCSV(arr, callback) {
           // Build large loop
           let spendingPairs = categorize(arr[$selected]);
           console.log(spendingPairs[0]);
-          //console.log(spendingPairs[0]);
-          //months.push(spendingPairs);
-          //makeCategories(spendingPairs[0], lineChartData, lineChartDemo);
-
-
-
-          //buildLabels(myChart, spendingPairs[0]);
           let categories = Object.keys(spendingPairs[0]);
           console.log(categories);
           //delete arr[i]['Total'];
