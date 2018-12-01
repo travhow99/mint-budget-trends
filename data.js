@@ -1,5 +1,5 @@
 const months = [];
-console.log('test');
+
 
 const january = [];
 const february = [];
@@ -24,75 +24,30 @@ months["august"] = august;
 months["september"] = september;
 months["october"] = october;
 
-// Function to fix spending
-/*
-function fixSpending(obj) {
-  console.log(obj);
-  for (let x = 0; x < obj.length; x++) {
-    let spending = arr[x]['Spending'];
-    spending = spending.substr(1,);
-    spending = spending.replace(',', '');
-    obj[x]['Spending'] = spending;
-    console.log(obj[x]);
-  }
-
-}
-*/
-
-
-// Build large dataBuilder function for call back function
-// Function needs to build months[month] arrays then call next functions
-function formatCSV(arr, callback) {
+function gatherData(arr) {
+  // Loop through months to populate months with all data
   for (let key in arr) {
-    //console.log(key);
-    let file = "./budget_breakdown/" + key + ".csv";
 
-    data = Papa.parse(file, {header: true, skipEmptyLines: true});
-    console.log(data);
+    $.get("./budget_breakdown/" + key + ".csv", function(data) {
+      let destructured = {};
+      data = Papa.parse(data, {header: true, skipEmptyLines: true});
+      data = data['data'];
+      for (let x = 0; x < data.length; x++) {
+        console.log(data[x]);
+        const {Category, Spending} = data[x];
+        console.log(Category);
+        data[x][Category] = Spending;
+        destructured[Category] = Spending;
+        console.log(data[x]);
 
-    data = data['data'];
+      }
+      console.log(destructured);
+      arr[key] = destructured;
+      //arr[key] = data;
 
-/*
-    Papa.parsePromise = function(file) {
-      return new Promise(function(complete, error) {
-        Papa.parse(file, {complete, error});
-      });
-    };
-    Papa.parsePromise(file)
-                                        .then(function(results) {console.log(results); });
-
-
-                                        */
-    /*
-    ("./budget_breakdown/" + key + ".csv", {
-    	complete: function(results) {
-    		console.log(results);
-    	}
-      */
-    }
-
-
-
-
-/* d3 csv
-    d3.csv("./budget_breakdown/" + key + ".csv", function(data) {
-      console.log(key);
-
-      let spending = data['Spending'];
-      spending = spending.replace('$', '');
-      spending = spending.replace(',', '');
-      spending = Number(spending);
-      data['Spending'] = spending;
-
-      arr[key].push(data);
-      //const march = data;
-      //march.push(...data);
-      //console.log(march);
+    }).done(function() {
+      console.log(arr[key]);
     });
-*/
-    //arr["march"] = march;
-
   }
-  //callback(arr);
-
-formatCSV(months);
+}
+gatherData(months);
