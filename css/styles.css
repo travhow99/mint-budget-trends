@@ -50,6 +50,6 @@ select {
   .sidebar {display: none}
 }
 
-.line {
+.doughnut, .line {
   display: none;
 }
