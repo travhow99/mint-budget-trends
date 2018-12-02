@@ -29,6 +29,16 @@ months["september"] = september;
 months["october"] = october;
 months["november"] = november;
 
+/* Build file uploader */
+function fileUpload() {
+    var x = document.createElement("INPUT");
+    x.setAttribute("type", "file");
+    $('#uploadButton').append(x);
+}
+
+
+
+
 /* doughnut chart */
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
@@ -304,12 +314,17 @@ function buildMonthDropdown() {
 buildMonthDropdown();
 
 // Dashboard controls
+$('#home').click(function() {
+  $('.dashboard .col-sm-10').hide();
+  $('.welcome').show();
+});
+
 $('#monthly').click(function() {
-  $('.line').hide();
+  $('.dashboard .col-sm-10').hide();
   $('.doughnut').show();
 });
 
 $('#category').click(function() {
-  $('.doughnut').hide();
+  $('.dashboard .col-sm-10').hide();
   $('.line').show();
 });
