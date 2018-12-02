@@ -531,12 +531,13 @@ function compileData(chart, arr) {
 
 // Dashboard controls
 $('#monthly').click(function() {
-  $('.line').hide();
+  console.log('hide');
+  $('.dashboard .col-sm-10').hide();
   $('.doughnut').show();
 });
 
 $('#category').click(function() {
-  $('.doughnut').hide();
+  $('.dashboard .col-sm-10').hide();
   $('.line').show();
 });
 
