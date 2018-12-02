@@ -531,7 +531,6 @@ function compileData(chart, arr) {
 
 // Dashboard controls
 $('#monthly').click(function() {
-  console.log('hide');
   $('.dashboard .col-sm-10').hide();
   $('.doughnut').show();
 });

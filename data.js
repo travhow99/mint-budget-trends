@@ -314,12 +314,17 @@ function buildMonthDropdown() {
 buildMonthDropdown();
 
 // Dashboard controls
+$('#home').click(function() {
+  $('.dashboard .col-sm-10').hide();
+  $('.welcome').show();
+});
+
 $('#monthly').click(function() {
-  $('.line').hide();
+  $('.dashboard .col-sm-10').hide();
   $('.doughnut').show();
 });
 
 $('#category').click(function() {
-  $('.doughnut').hide();
+  $('.dashboard .col-sm-10').hide();
   $('.line').show();
 });
