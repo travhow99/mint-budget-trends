@@ -14,6 +14,7 @@ const july = [];
 const august = [];
 const september = [];
 const october = [];
+const november = [];
 
 // Refector to make months into array?
 months["january"] = january;
@@ -26,6 +27,74 @@ months["july"] = july;
 months["august"] = august;
 months["september"] = september;
 months["october"] = october;
+months["november"] = november;
+
+/* doughnut chart */
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: []
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                display: false,
+            }]
+        },
+        // Add percentages to tooltips
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              var dataset = data.datasets[tooltipItem.datasetIndex];
+              var meta = dataset._meta[Object.keys(dataset._meta)[0]];
+              var total = meta.total;
+              var currentValue = dataset.data[tooltipItem.index];
+              var percentage = parseFloat((currentValue/total*100).toFixed(1));
+              return currentValue + ' (' + percentage + '%)';
+            },
+            title: function(tooltipItem, data) {
+              return data.labels[tooltipItem[0].index];
+            }
+          }
+        },
+    }
+});
+
+/** Start doughnut */
+const chartColors = [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(75, 229, 35, 0.2)',
+              'rgba(184, 1, 115, 0.2)',
+              'rgba(246, 151, 54, 0.2)',
+              'rgba(97, 125, 231, 0.2)',
+              'rgba(205, 109, 202, 0.2)',
+              'rgba(40, 2, 127, 0.2)',
+              'rgba(135, 236, 217, 0.2)',
+              'rgba(69, 179, 193, 0.2)'
+            ];
+const chartBorders = [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(75, 229, 35, 1)',
+              'rgba(184, 1, 115, 1)',
+              'rgba(246, 151, 54, 1)',
+              'rgba(97, 125, 231, 1)',
+              'rgba(205, 109, 202, 1)',
+              'rgba(40, 2, 127, 1)',
+              'rgba(135, 236, 217, 1)',
+              'rgba(69, 179, 193, 1)'
+            ];
 
 /** Line chart attempt */
 //this is data for the line charts
@@ -145,7 +214,52 @@ async function gatherData(arr) {
 gatherData(months)
                   .then(buildLineChart(lineChartDemo, lineChartData));
 
-// Needs to build data for 'total's
+
+function buildDoughnutChart(chart) {
+  let dataObject = {};
+  let labels = [];
+  //console.log(Object.keys(months[$selected]));
+
+  let $selected = $('#monthDropdown').val();
+  let data = months[$selected];
+
+  // Remove empty values and totals from data
+  for (let key in data) {
+    if (data[key] === 0 || key === 'Total') {
+      delete data[key];
+    }
+  }
+  let obj = {}
+  Object.keys(data)
+    .sort()
+    .forEach(function(v, i) {
+        //console.log(v, arr[x][v]);
+        let spending = data[v];
+        obj[v] = spending;
+
+     });
+
+   console.log(obj);
+
+
+  console.log(data);
+
+  labels.push(...Object.keys(obj));
+  dataObject['data'] = Object.values(obj);
+
+
+  //dataObject['data'] = data;
+  //dataObject['label'] = key;
+  dataObject['backgroundColor'] = chartColors;
+  dataObject['borderColor'] = chartBorders;
+  dataObject['borderWidth'] = 1;
+
+  // This should equal data(numbers)
+  myChart['data']['datasets'][0] = dataObject;
+  myChart['data']['labels'] = labels;
+  chart.update();
+
+}
 
 function buildLineChart(chart, chartObj) {
   let $selected = $('#categoryDropdown').val();
@@ -153,8 +267,6 @@ function buildLineChart(chart, chartObj) {
   if (!$selected) {
     $selected = 'Total';
   };
-
-  console.log(spendingTotals[$selected]);
 
   chartObj.labels = Object.keys(months);
 
@@ -170,6 +282,10 @@ function buildLineChart(chart, chartObj) {
   chart.update();
 }
 
+// change function for months (doughnut chart)
+$('#monthDropdown').change(function(){
+  buildDoughnutChart(myChart);
+});
 // change function for option values (dropdown)
 $('#categoryDropdown').change(function(){
   buildLineChart(lineChartDemo, lineChartData);
@@ -179,7 +295,13 @@ $('#categoryDropdown').change(function(){
 
 
 
-
+function buildMonthDropdown() {
+  $('#monthDropdown').append('<option value="default">Select Your Month</option>');
+  for (let key in months){
+    $('#monthDropdown').append(`<option value="${key}">${key}</option>`);
+  }
+}
+buildMonthDropdown();
 
 // Dashboard controls
 $('#monthly').click(function() {
