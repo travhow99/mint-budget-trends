@@ -46,6 +46,10 @@ select {
     font-size: 18px;
 }
 
+#setup li {
+    max-width: 720px;
+}
+
 @media (max-width: 767px) {
   .sidebar {display: none}
 }
