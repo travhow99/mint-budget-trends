@@ -1,5 +1,8 @@
 const months = [];
-console.log('test');
+const totals = [];
+const spendingLabels = [];
+const spendingTotals = {};
+
 
 const january = [];
 const february = [];
@@ -11,6 +14,7 @@ const july = [];
 const august = [];
 const september = [];
 const october = [];
+const november = [];
 
 // Refector to make months into array?
 months["january"] = january;
@@ -23,76 +27,289 @@ months["july"] = july;
 months["august"] = august;
 months["september"] = september;
 months["october"] = october;
+months["november"] = november;
 
-// Function to fix spending
-/*
-function fixSpending(obj) {
-  console.log(obj);
-  for (let x = 0; x < obj.length; x++) {
-    let spending = arr[x]['Spending'];
-    spending = spending.substr(1,);
-    spending = spending.replace(',', '');
-    obj[x]['Spending'] = spending;
-    console.log(obj[x]);
+/* doughnut chart */
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: []
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                display: false,
+            }]
+        },
+        // Add percentages to tooltips
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              var dataset = data.datasets[tooltipItem.datasetIndex];
+              var meta = dataset._meta[Object.keys(dataset._meta)[0]];
+              var total = meta.total;
+              var currentValue = dataset.data[tooltipItem.index];
+              var percentage = parseFloat((currentValue/total*100).toFixed(1));
+              return currentValue + ' (' + percentage + '%)';
+            },
+            title: function(tooltipItem, data) {
+              return data.labels[tooltipItem[0].index];
+            }
+          }
+        },
+    }
+});
+
+/** Start doughnut */
+const chartColors = [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(75, 229, 35, 0.2)',
+              'rgba(184, 1, 115, 0.2)',
+              'rgba(246, 151, 54, 0.2)',
+              'rgba(97, 125, 231, 0.2)',
+              'rgba(205, 109, 202, 0.2)',
+              'rgba(40, 2, 127, 0.2)',
+              'rgba(135, 236, 217, 0.2)',
+              'rgba(69, 179, 193, 0.2)'
+            ];
+const chartBorders = [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(75, 229, 35, 1)',
+              'rgba(184, 1, 115, 1)',
+              'rgba(246, 151, 54, 1)',
+              'rgba(97, 125, 231, 1)',
+              'rgba(205, 109, 202, 1)',
+              'rgba(40, 2, 127, 1)',
+              'rgba(135, 236, 217, 1)',
+              'rgba(69, 179, 193, 1)'
+            ];
+
+/** Line chart attempt */
+//this is data for the line charts
+
+var lineChartData = {
+  // This will be full of months
+  datasets: [{
+    //fillColor: "#560620",
+    strokeColor: "blue",
+    strokeLineWidth: 18,
+    pointColor: "white",
+    // Map through all data to find matching categories for label
+    label: 'default',
+    backgroundColor: 'transparent',
+    borderColor: 'lightblue',
+
+    // mapped data
+    //data: [20, 90, 140, 25, 53, 67, 47, 98, 30, 80, 20, 40, 10, 60],
+  }]
+};
+
+// then i just duplicated the chart specific options
+var cty = document.getElementById("lineChart").getContext("2d");
+var lineChartDemo = new Chart(cty, {
+  type: 'line',
+  label: 'test',
+  data: lineChartData,
+  pointDotRadius: 3,
+  bezierCurve: true,
+  datasetFill: false,
+  datasetStroke: true,
+  scaleShowVerticalLines: false,
+  scaleShowHorizontalLines: false,
+  pointDotStrokeWidth: 4,
+  //fillColor: "rgba(220,220,220,0.2)",
+  scaleGridLineColor: "blue",
+  options: {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero:true
+              }
+          }],
+          xAxes: [{
+            ticks: {
+              autoSkip: false
+            }
+          }]
+      }
   }
+
+});
+
+
+
+async function gatherData(arr) {
+  return new Promise(function(resolve, reject) {
+
+
+    let counter = 0;
+    // Loop through months to populate months with all data
+    for (let key in arr) {
+
+      $.get("./budget_breakdown/" + key + ".csv", function(data) {
+        let destructured = {};
+        data = Papa.parse(data, {header: true, skipEmptyLines: true});
+        data = data['data'];
+        for (let x = 0; x < data.length; x++) {
+          const {Category, Spending} = data[x];
+          let spending = Number(Spending.replace('$', '')
+                                        .replace(',', ''));
+          data[x][Category] = spending;
+          destructured[Category] = spending;
+
+        }
+
+        arr[key] = destructured;
+        totals.push(arr[key].Total);
+      }).done(function() {
+        let keys = Object.keys(arr[key]);
+
+        // Aggregate keys for labels dropdown
+        for (let x = 0; x < keys.length; x++) {
+          if (spendingLabels.indexOf(keys[x]) === -1 && keys[x] !== 'Total') {
+            spendingLabels.push(keys[x]);
+          }
+        }
+        counter++;
+        if (Object.keys(arr).length === counter) {
+          // Append to #categoryDropdown
+          spendingLabels.sort();
+          $('#categoryDropdown').append('<option value="Total">Total</option>');
+          for (let i = 0; i < spendingLabels.length; i++){
+            $('#categoryDropdown').append(`<option value="${spendingLabels[i]}">${spendingLabels[i]}</option>`);
+          }
+
+          // Build arrays of each category
+          console.log(arr);
+          for (let cat in arr) {
+            for (let x = 0; x < spendingLabels.length; x++) {
+              if (!arr[cat][spendingLabels[x]]) {
+                arr[cat][spendingLabels[x]] = 0;
+              }
+              if (!spendingTotals[spendingLabels[x]]) {
+                spendingTotals[spendingLabels[x]] = [];
+              }
+              spendingTotals[spendingLabels[x]].push(arr[cat][spendingLabels[x]]);
+            }
+          }
+          console.log(spendingTotals);
+        }
+
+      });
+    }
+  });
+}
+gatherData(months)
+                  .then(buildLineChart(lineChartDemo, lineChartData));
+
+
+function buildDoughnutChart(chart) {
+  let dataObject = {};
+  let labels = [];
+  //console.log(Object.keys(months[$selected]));
+
+  let $selected = $('#monthDropdown').val();
+  let data = months[$selected];
+
+  // Remove empty values and totals from data
+  for (let key in data) {
+    if (data[key] === 0 || key === 'Total') {
+      delete data[key];
+    }
+  }
+  let obj = {}
+  Object.keys(data)
+    .sort()
+    .forEach(function(v, i) {
+        //console.log(v, arr[x][v]);
+        let spending = data[v];
+        obj[v] = spending;
+
+     });
+
+   console.log(obj);
+
+
+  console.log(data);
+
+  labels.push(...Object.keys(obj));
+  dataObject['data'] = Object.values(obj);
+
+
+  //dataObject['data'] = data;
+  //dataObject['label'] = key;
+  dataObject['backgroundColor'] = chartColors;
+  dataObject['borderColor'] = chartBorders;
+  dataObject['borderWidth'] = 1;
+
+  // This should equal data(numbers)
+  myChart['data']['datasets'][0] = dataObject;
+  myChart['data']['labels'] = labels;
+  chart.update();
 
 }
-*/
 
+function buildLineChart(chart, chartObj) {
+  let $selected = $('#categoryDropdown').val();
+  //console.log(!$('#categoryDropdown').val());
+  if (!$selected) {
+    $selected = 'Total';
+  };
 
-// Build large dataBuilder function for call back function
-// Function needs to build months[month] arrays then call next functions
-function formatCSV(arr, callback) {
-  for (let key in arr) {
-    //console.log(key);
-    let file = "./budget_breakdown/" + key + ".csv";
+  chartObj.labels = Object.keys(months);
 
-    data = Papa.parse(file, {header: true, skipEmptyLines: true});
-    console.log(data);
+  // programmatically get label (category) -> use html dropdown
+  chartObj.datasets[0].label = $selected;
 
-    data = data['data'];
-
-/*
-    Papa.parsePromise = function(file) {
-      return new Promise(function(complete, error) {
-        Papa.parse(file, {complete, error});
-      });
-    };
-    Papa.parsePromise(file)
-                                        .then(function(results) {console.log(results); });
-
-
-                                        */
-    /*
-    ("./budget_breakdown/" + key + ".csv", {
-    	complete: function(results) {
-    		console.log(results);
-    	}
-      */
-    }
-
-
-
-
-/* d3 csv
-    d3.csv("./budget_breakdown/" + key + ".csv", function(data) {
-      console.log(key);
-
-      let spending = data['Spending'];
-      spending = spending.replace('$', '');
-      spending = spending.replace(',', '');
-      spending = Number(spending);
-      data['Spending'] = spending;
-
-      arr[key].push(data);
-      //const march = data;
-      //march.push(...data);
-      //console.log(march);
-    });
-*/
-    //arr["march"] = march;
-
+  if ($selected === 'Total') {
+    chartObj.datasets[0].data = totals;
+  } else {
+    chartObj.datasets[0].data = spendingTotals[$selected];
   }
-  //callback(arr);
 
-formatCSV(months);
+  chart.update();
+}
+
+// change function for months (doughnut chart)
+$('#monthDropdown').change(function(){
+  buildDoughnutChart(myChart);
+});
+// change function for option values (dropdown)
+$('#categoryDropdown').change(function(){
+  buildLineChart(lineChartDemo, lineChartData);
+});
+
+
+
+
+
+function buildMonthDropdown() {
+  $('#monthDropdown').append('<option value="default">Select Your Month</option>');
+  for (let key in months){
+    $('#monthDropdown').append(`<option value="${key}">${key}</option>`);
+  }
+}
+buildMonthDropdown();
+
+// Dashboard controls
+$('#monthly').click(function() {
+  $('.line').hide();
+  $('.doughnut').show();
+});
+
+$('#category').click(function() {
+  $('.doughnut').hide();
+  $('.line').show();
+});
