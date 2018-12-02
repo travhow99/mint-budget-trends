@@ -1,4 +1,5 @@
 const months = [];
+const totals = [];
 const spendingLabels = [];
 const spendingTotals = {};
 
@@ -102,8 +103,7 @@ async function gatherData(arr) {
         }
 
         arr[key] = destructured;
-        //arr[key] = data;
-
+        totals.push(arr[key].Total);
       }).done(function() {
         let keys = Object.keys(arr[key]);
 
@@ -142,7 +142,10 @@ async function gatherData(arr) {
     }
   });
 }
-gatherData(months).then(buildLineChart(lineChartDemo, lineChartData));
+gatherData(months)
+                  .then(buildLineChart(lineChartDemo, lineChartData));
+
+// Needs to build data for 'total's
 
 function buildLineChart(chart, chartObj) {
   let $selected = $('#categoryDropdown').val();
@@ -157,7 +160,12 @@ function buildLineChart(chart, chartObj) {
 
   // programmatically get label (category) -> use html dropdown
   chartObj.datasets[0].label = $selected;
-  chartObj.datasets[0].data = spendingTotals[$selected];
+
+  if ($selected === 'Total') {
+    chartObj.datasets[0].data = totals;
+  } else {
+    chartObj.datasets[0].data = spendingTotals[$selected];
+  }
 
   chart.update();
 }
