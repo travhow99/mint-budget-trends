@@ -37,6 +37,12 @@ ul.menu {
   background: white;
 }
 
+.sidebar {
+    -webkit-box-shadow: 1px 0px 3px 0px rgba(0,0,0,0.51);
+    -moz-box-shadow: 1px 0px 3px 0px rgba(0,0,0,0.51);
+    box-shadow: 1px 0px 3px 0px rgba(0,0,0,0.51);
+}
+
 canvas {max-width: 50%}
 
 select {

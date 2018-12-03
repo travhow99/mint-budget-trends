@@ -306,7 +306,7 @@ $('#categoryDropdown').change(function(){
 
 
 function buildMonthDropdown() {
-  $('#monthDropdown').append('<option value="default">Select Your Month</option>');
+  //$('#monthDropdown').append('<option value="default">Select Your Month</option>');
   for (let key in months){
     $('#monthDropdown').append(`<option value="${key}">${key}</option>`);
   }
@@ -320,6 +320,7 @@ $('#home').click(function() {
 });
 
 $('#monthly').click(function() {
+  buildDoughnutChart(myChart);
   $('.dashboard .col-sm-10').hide();
   $('.doughnut').show();
 });
