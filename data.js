@@ -41,6 +41,8 @@ function fileUpload() {
 
 /* doughnut chart */
 var ctx = document.getElementById("myChart").getContext('2d');
+console.log(ctx);
+
 var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
@@ -226,13 +228,19 @@ gatherData(months)
 
 
 function buildDoughnutChart(chart) {
+  let $selected;
   let dataObject = {};
   let labels = [];
   //console.log(Object.keys(months[$selected]));
-
-  let $selected = $('#monthDropdown').val();
+  //if (chart === new)
+  if (chart.id >= 1) {
+    $selected = 'january';
+    console.log('yes', $selected);
+  } else {
+    $selected = $('.monthDropdown').val();
+  }
   let data = months[$selected];
-
+  console.log($selected);
   // Remove empty values and totals from data
   for (let key in data) {
     if (data[key] === 0 || key === 'Total') {
@@ -264,9 +272,10 @@ function buildDoughnutChart(chart) {
   dataObject['borderColor'] = chartBorders;
   dataObject['borderWidth'] = 1;
 
+  console.log(chart);
   // This should equal data(numbers)
-  myChart['data']['datasets'][0] = dataObject;
-  myChart['data']['labels'] = labels;
+  chart['data']['datasets'][0] = dataObject;
+  chart['data']['labels'] = labels;
   chart.update();
 
 }
@@ -292,9 +301,66 @@ function buildLineChart(chart, chartObj) {
   chart.update();
 }
 
+/* function to compare months */
+function compareMonths() {
+  // build new version of myChart
+  var ctx = document.getElementById("newChart").getContext('2d');//.getContext('2d');
+  console.log(ctx);
+  var newChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          datasets: []
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  display: false,
+              }]
+          },
+          // Add percentages to tooltips
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem, data) {
+                var dataset = data.datasets[tooltipItem.datasetIndex];
+                var meta = dataset._meta[Object.keys(dataset._meta)[0]];
+                var total = meta.total;
+                var currentValue = dataset.data[tooltipItem.index];
+                var percentage = parseFloat((currentValue/total*100).toFixed(1));
+                return currentValue + ' (' + percentage + '%)';
+              },
+              title: function(tooltipItem, data) {
+                return data.labels[tooltipItem[0].index];
+              }
+            }
+          },
+      }
+  });
+
+  console.log(newChart);
+  buildDoughnutChart(newChart);
+    // based on new selected month from dropdown?
+    // Or default to january
+  // execute buildDoughnutChart() on myChart2
+
+}
+
+$('#chart2').click(function() {
+  if (!$(this).hasClass('added')) {
+    compareMonths();
+    $('#chart2').addClass('added');
+    $('.monthDropdown').clone().prependTo('#chart2');
+  }
+});
+
+
+
 // change function for months (doughnut chart)
-$('#monthDropdown').change(function(){
-  buildDoughnutChart(myChart);
+$('.monthDropdown').change(function(){
+  let chart = $(this).siblings('canvas');
+  chartId = chart.attr('id');
+  console.log(chartId);
+  buildDoughnutChart(chartId);
 });
 // change function for option values (dropdown)
 $('#categoryDropdown').change(function(){
@@ -306,9 +372,9 @@ $('#categoryDropdown').change(function(){
 
 
 function buildMonthDropdown() {
-  //$('#monthDropdown').append('<option value="default">Select Your Month</option>');
+  //$('.monthDropdown').append('<option value="default">Select Your Month</option>');
   for (let key in months){
-    $('#monthDropdown').append(`<option value="${key}">${key}</option>`);
+    $('.monthDropdown').append(`<option value="${key}">${key}</option>`);
   }
 }
 buildMonthDropdown();

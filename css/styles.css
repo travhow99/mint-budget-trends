@@ -21,6 +21,14 @@ h1, h2, h3, h4, h5, h6 {
   text-align: left!important;
 }
 
+.equal {
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+  flex-flow: column;
+  height: 100%;
+}
+
 .sidebar {
     background-color: #78e1a1!important;
     height: 100%;
@@ -43,7 +51,7 @@ ul.menu {
     box-shadow: 1px 0px 3px 0px rgba(0,0,0,0.51);
 }
 
-canvas {max-width: 50%}
+.line canvas {max-width: 50%}
 
 select {
     background: dodgerblue;
@@ -54,6 +62,16 @@ select {
 
 #setup li {
     max-width: 720px;
+}
+
+#chart2 {
+  height: 100%;
+  border: 4px dashed #908888;
+  transition: 0.7s;
+}
+
+#chart2.added {
+  border: none;
 }
 
 @media (max-width: 767px) {

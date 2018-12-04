@@ -53,12 +53,26 @@
           <li>That's it! Open the program and start comparing your budget. Use this to help you better plan for future months, by seeing where you may need to cut back or which categories you are doing a good job in. Good luck!</li>
         </ol>
       </div>
-      <div class="col-sm-10 doughnut">
+      <div class="chart-container col-sm-10 doughnut">
         <h2>Mint Budget Breakdown</h2>
         <hr>
-        <h3>Monthly Spending Breakdown</h3>
-        <select id="monthDropdown"></select>
-        <canvas id="myChart" width="400" height="400"></canvas>
+        <div class="col-sm-5 equal">
+          <div id="chart1">
+            <h3>Monthly Spending Breakdown</h3>
+            <select class="monthDropdown"></select>
+            <canvas id="myChart" width="400" height="400"></canvas>
+          </div>
+        </div>
+        <div class="col-sm-5 equal">
+          <h3>Compare With Another Month</h3>
+          <div id="chart2">
+            <canvas id="newChart" width="400" height="400"></canvas>
+          </div>
+          <!-- What needs to be added via jQuery
+          <select id="monthDropdown"></select>
+          <canvas id="myChart" width="400" height="400"></canvas>
+          !-->
+        </div>
       </div>
       <div class="col-sm-10 line">
         <h2>Mint Budget Breakdown</h2>
