@@ -352,6 +352,10 @@ function compareMonths() {
 
 $('#chart2').click(function() {
   if (!$(this).hasClass('added')) {
+    $('#chart2').empty().append(`<div class="hideChart">X</div>
+    <canvas id="newChart" width="400" height="400"></canvas>
+  `);
+
     compareMonths();
     $('#chart2').addClass('added');
     $('.monthDropdown').clone().removeClass('monthDropdown').addClass('monthDropdown2').prependTo('#chart2');
@@ -420,7 +424,10 @@ $('#category').click(function() {
   $('.line').show();
 });
 
-$('.hideChart').click(function() {
-  $('#chart2').removeClass('added');
+$(document).on('click', '.hideChart', function() {
+  console.log('hide');
+  $('#chart2').removeClass('added').empty().append(`<div class="hideChart">X</div>
+  <canvas id="newChart2" width="400" height="400"></canvas>
+`);
 
-})
+});
