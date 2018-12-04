@@ -1,3 +1,5 @@
+let newChart;
+
 const months = [];
 const totals = [];
 const spendingLabels = [];
@@ -234,7 +236,10 @@ function buildDoughnutChart(chart) {
   //console.log(Object.keys(months[$selected]));
   //if (chart === new)
   if (chart.id >= 1) {
-    $selected = 'january';
+    $selected = $('.monthDropdown2').val();
+    if (!$selected) {
+      $selected = 'january';
+    }
     console.log('yes', $selected);
   } else {
     $selected = $('.monthDropdown').val();
@@ -306,7 +311,7 @@ function compareMonths() {
   // build new version of myChart
   var ctx = document.getElementById("newChart").getContext('2d');//.getContext('2d');
   console.log(ctx);
-  var newChart = new Chart(ctx, {
+  newChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
           //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -349,7 +354,8 @@ $('#chart2').click(function() {
   if (!$(this).hasClass('added')) {
     compareMonths();
     $('#chart2').addClass('added');
-    $('.monthDropdown').clone().prependTo('#chart2');
+    $('.monthDropdown').clone().removeClass('monthDropdown').addClass('monthDropdown2').prependTo('#chart2');
+    $('.hideChart').show();
   }
 });
 
@@ -357,11 +363,29 @@ $('#chart2').click(function() {
 
 // change function for months (doughnut chart)
 $('.monthDropdown').change(function(){
+  console.log('changed');
   let chart = $(this).siblings('canvas');
   chartId = chart.attr('id');
   console.log(chartId);
-  buildDoughnutChart(chartId);
+  if (chartId === 'myChart') {
+    buildDoughnutChart(myChart);
+  } else if (chartId === 'newChart') {
+    buildDoughnutChart(newChart);
+  }
 });
+
+$(document).on('change', '.monthDropdown2', function(){
+  console.log('changed');
+  let chart = $(this).siblings('canvas');
+  chartId = chart.attr('id');
+  console.log(chartId);
+  if (chartId === 'myChart') {
+    buildDoughnutChart(myChart);
+  } else if (chartId === 'newChart') {
+    buildDoughnutChart(newChart);
+  }
+});
+
 // change function for option values (dropdown)
 $('#categoryDropdown').change(function(){
   buildLineChart(lineChartDemo, lineChartData);
@@ -395,3 +419,8 @@ $('#category').click(function() {
   $('.dashboard .col-sm-10').hide();
   $('.line').show();
 });
+
+$('.hideChart').click(function() {
+  $('#chart2').removeClass('added');
+
+})

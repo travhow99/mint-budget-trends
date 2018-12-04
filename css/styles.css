@@ -74,6 +74,14 @@ select {
   border: none;
 }
 
+.hideChart {
+  display: none;
+  position: absolute;
+  right: 0;
+  font-size: 32px;
+  cursor: pointer;
+}
+
 @media (max-width: 767px) {
   .sidebar {display: none}
 }
