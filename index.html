@@ -7,7 +7,7 @@
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-
+  <script src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" data-auto-replace-svg="nest"></script>
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -65,9 +65,13 @@
         </div>
         <div class="col-sm-5 equal">
           <h3>Compare With Another Month</h3>
-          <div id="chart2">
+          <div id="chart2" class="empty">
             <div class="hideChart">X</div>
+            <div class="center">
+              <i class="fas fa-plus-circle"></i>
+            </div>
             <canvas id="newChart" width="400" height="400"></canvas>
+
           </div>
           <!-- What needs to be added via jQuery
           <select id="monthDropdown"></select>

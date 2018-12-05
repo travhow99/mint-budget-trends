@@ -226,8 +226,20 @@ async function gatherData(arr) {
   });
 }
 gatherData(months)
+                  .then(evenCompareHeight())
                   .then(buildLineChart(lineChartDemo, lineChartData));
 
+/*
+async function asyncFunction() {
+  var result = await gatherData(months);
+  var resultTwo = await evenCompareHeight(result);
+  var resultThree = await buildLineChart(lineChartDemo, lineChartData);
+
+  return resultThree;
+}
+
+asyncFunction();
+*/
 
 function buildDoughnutChart(chart) {
   let $selected;
@@ -427,7 +439,22 @@ $('#category').click(function() {
 $(document).on('click', '.hideChart', function() {
   console.log('hide');
   $('#chart2').removeClass('added').empty().append(`<div class="hideChart">X</div>
+  <div class="center">
+    <i class="fas fa-plus-circle"></i>
+  </div>
   <canvas id="newChart2" width="400" height="400"></canvas>
 `);
+  //$('#chart2')
+
+  evenCompareHeight();
 
 });
+
+function evenCompareHeight() {
+  console.log($('.col-sm-10').width());
+  $height = $('#myChart').height();
+  if ($height === 0) {
+    $height = $('.col-sm-10').width() / 2.5;
+  }
+  $('#chart2').css('height',$height);
+}
