@@ -461,3 +461,7 @@ function evenCompareHeight() {
   }
   $('#chart2').css('height',$height);
 }
+
+$( window ).resize(function() {
+  evenCompareHeight();
+});
