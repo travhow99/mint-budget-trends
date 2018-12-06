@@ -362,7 +362,9 @@ function compareMonths() {
 
 }
 
-$('#chart2').click(function() {
+
+
+$(document).on('click', '.center', function() {
   if (!$(this).hasClass('added')) {
     $('#chart2').empty().append(`<div class="hideChart">X</div>
     <canvas id="newChart" width="400" height="400"></canvas>
@@ -373,6 +375,7 @@ $('#chart2').click(function() {
     $('.monthDropdown').clone().removeClass('monthDropdown').addClass('monthDropdown2').prependTo('#chart2');
     $('.hideChart').show();
   }
+
 });
 
 

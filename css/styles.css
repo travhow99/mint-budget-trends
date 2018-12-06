@@ -66,32 +66,36 @@ select {
 
 #chart2 {
   height: 100%;
-  border: 4px dashed #908888;
   transition: 0.7s;
   position: relative;
-  cursor: pointer;
+
 }
 
 #chart2.added {
   border: none;
+  cursor: default;
 }
 
 .hideChart {
   display: none;
   position: absolute;
-  right: 0;
+  right: -10px;
   font-size: 32px;
   cursor: pointer;
 }
 
 .center {
-  font-size: 8em;
+  font-size: 10em;
   margin: 0;
   position: absolute;
   top: 50%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+.center {
+  cursor: pointer;
 }
 
 @media (max-width: 767px) {
