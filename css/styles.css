@@ -99,7 +99,16 @@ select {
 }
 
 @media (max-width: 767px) {
-  .sidebar {display: none}
+  .sidebar {height: auto;}
+  ul.menu * {
+    display: inline;
+  }
+  ul.menu h3 {
+    display: inline-block;
+    margin-top: 6px;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
 }
 
 .doughnut, .line {
