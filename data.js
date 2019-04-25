@@ -1,3 +1,10 @@
+var $files;
+
+$.get( "assets.php", function( data ) {
+  $files = data;
+  console.log($files);
+});
+
 let newChart;
 
 const months = [];

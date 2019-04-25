@@ -99,6 +99,7 @@ select {
 }
 
 @media (max-width: 767px) {
+  canvas, .line canvas {max-width: 100%;}
   .sidebar {height: auto;}
   ul.menu * {
     display: inline;
@@ -109,6 +110,10 @@ select {
     margin-bottom: 0;
     vertical-align: middle;
   }
+  ul.menu li {
+    vertical-align: -webkit-baseline-middle;
+  }
+  .equal {height:auto;}
 }
 
 .doughnut, .line {
