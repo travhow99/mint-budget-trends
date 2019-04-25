@@ -1,9 +1,26 @@
-var $files;
+const $files = [];
 
-$.get( "assets.php", function( data ) {
-  $files = data;
+fetch('assets.php')
+                  .then(function(response) {
+                    return response.json();
+                  })
+                  .then(function(myJson) {
+                    console.log(myJson);
+                    for (let x in myJson) {
+                      $files.push(myJson[x]);
+                    }
+                    console.log($files);
+                  });
+
+/* $.get( "assets.php", function( data ) {
+  var files = $.parseJSON(data);
+  console.log(files);
+  for (let x in files) {
+    $files.push(files[x]);
+  }
+
   console.log($files);
-});
+}); */
 
 let newChart;
 
