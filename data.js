@@ -471,6 +471,7 @@ $('#categoryDropdown').change(function(){
 
 
 function buildMonthDropdown() {
+  console.log(months);
   //$('.monthDropdown').append('<option value="default">Select Your Month</option>');
   for (let key in months){
     $('.monthDropdown').append(`<option value="${key}">${key}</option>`);
