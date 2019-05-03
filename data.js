@@ -10,6 +10,14 @@ fetch('assets.php')
                       $files.push(myJson[x]);
                     }
                     console.log($files);
+                  })
+                    .then(function() {
+                      console.log('gathering');
+                      gatherData($files);
+                  }).then(function() {
+                    evenCompareHeight();
+                  }).then(function() {
+                    buildLineChart(lineChartDemo, lineChartData);
                   });
 
 /* $.get( "assets.php", function( data ) {
@@ -30,7 +38,7 @@ const spendingLabels = [];
 const spendingTotals = {};
 
 
-const january = [];
+/* const january = [];
 const february = [];
 const march = [];
 const april = [];
@@ -54,7 +62,7 @@ months["august"] = august;
 months["september"] = september;
 months["october"] = october;
 months["november"] = november;
-
+ */
 /* Build file uploader */
 function fileUpload() {
     var x = document.createElement("INPUT");
@@ -186,20 +194,31 @@ var lineChartDemo = new Chart(cty, {
 
 });
 
+// TO Do
+// Move function to earlier ajax
+// Breakdown arr[key] to get year & month
+// Populate months array with object & month
 
-
-async function gatherData(arr) {
-  return new Promise(function(resolve, reject) {
+function gatherData(arr) {
+  console.log(arr);
 
 
     let counter = 0;
     // Loop through months to populate months with all data
     for (let key in arr) {
 
-      $.get("./budget_breakdown/" + key + ".csv", function(data) {
+      $.get("./budget_breakdown/" + arr[key], function(data) {
+
+        const year = arr[key].split('_')[0];
+        let month = arr[key].split('_')[1].replace('.csv', '');
+        month = month.charAt(0).toUpperCase() + month.slice(1);
+
+
         let destructured = {};
         data = Papa.parse(data, {header: true, skipEmptyLines: true});
         data = data['data'];
+        //console.log(data);
+
         for (let x = 0; x < data.length; x++) {
           const {Category, Spending} = data[x];
           let spending = Number(Spending.replace('$', '')
@@ -209,10 +228,16 @@ async function gatherData(arr) {
 
         }
 
+        months[month] = destructured;
+
+        console.log(destructured);
+
         arr[key] = destructured;
         totals.push(arr[key].Total);
       }).done(function() {
         let keys = Object.keys(arr[key]);
+
+        console.log(keys);
 
         // Aggregate keys for labels dropdown
         for (let x = 0; x < keys.length; x++) {
@@ -222,6 +247,7 @@ async function gatherData(arr) {
         }
         counter++;
         if (Object.keys(arr).length === counter) {
+          console.log(spendingLabels);
           // Append to #categoryDropdown
           spendingLabels.sort();
           $('#categoryDropdown').append('<option value="Total">Total</option>');
@@ -242,16 +268,15 @@ async function gatherData(arr) {
               spendingTotals[spendingLabels[x]].push(arr[cat][spendingLabels[x]]);
             }
           }
-          console.log(spendingTotals);
+          console.log(months);
+          buildMonthDropdown();
         }
-
       });
     }
-  });
 }
-gatherData(months)
+/* gatherData(months)
                   .then(evenCompareHeight())
-                  .then(buildLineChart(lineChartDemo, lineChartData));
+                  .then(buildLineChart(lineChartDemo, lineChartData)); */
 
 /*
 async function asyncFunction() {
@@ -266,6 +291,7 @@ asyncFunction();
 */
 
 function buildDoughnutChart(chart) {
+  console.log(chart);
   let $selected;
   let dataObject = {};
   let labels = [];
@@ -280,6 +306,12 @@ function buildDoughnutChart(chart) {
   } else {
     $selected = $('.monthDropdown').val();
   }
+  if (!$selected) {
+    $selected = 'january';
+  }
+
+  $selected = $selected.charAt(0).toUpperCase() + $selected.slice(1);
+
   let data = months[$selected];
   console.log($selected);
   // Remove empty values and totals from data
@@ -444,7 +476,7 @@ function buildMonthDropdown() {
     $('.monthDropdown').append(`<option value="${key}">${key}</option>`);
   }
 }
-buildMonthDropdown();
+//buildMonthDropdown();
 
 // Dashboard controls
 $('#home').click(function() {
