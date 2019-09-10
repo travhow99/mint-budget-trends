@@ -98,6 +98,12 @@ select {
   cursor: pointer;
 }
 
+#dropbox {
+  min-height: 120px;
+  width: 50%;
+  border: 4px dashed grey;
+}
+
 @media (max-width: 767px) {
   .sidebar {height: auto;}
   ul.menu * {

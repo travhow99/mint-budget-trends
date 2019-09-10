@@ -33,6 +33,7 @@
           <li id="home" class="btn btn-block text-left">home</li>
           <li id="monthly" class="btn btn-block text-left">monthly</li>
           <li id="category" class="btn btn-block text-left">by category</li>
+          <li id="upload" class='btn btn-block text-left'>upload</li>
         </ul>
       </div>
       <div class="col-sm-10 welcome">
@@ -86,11 +87,21 @@
         <select id="categoryDropdown"></select>
         <canvas id="lineChart" width="400" height="400"></canvas>
       </div>
+
+      <div class="col-sm-10 upload">
+        <h2>Mint File Upload</h2>
+        <hr>
+        <h3>Upload Monthly Spending</h3>
+        <input type="file" id="dropbox" onchange="handleFiles(this.files)">
+
+      </div>
     </div>
+
   </div>
 
 
-
+<script type="text/javascript" src='js/app.js'></script>
+<script type="text/javascript" src='js/upload.js'></script>
 <script type="text/javascript" src="data.js"></script>
 
 </body>
