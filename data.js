@@ -172,7 +172,7 @@ async function gatherData(arr) {
     // Loop through months to populate months with all data
     for (let key in arr) {
 
-      $.get("./budget_breakdown/" + key + ".csv", function(data) {
+      $.get("./uploads/" + key + ".csv", function(data) {
         let destructured = {};
         data = Papa.parse(data, {header: true, skipEmptyLines: true});
         data = data['data'];

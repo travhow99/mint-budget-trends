@@ -49,7 +49,7 @@
           <li>Scroll down and select <code>export to CSV</code>.</li>
           <li>After this, it is a bit more involved, but you just need to change the <code>During</code> dropdown to select each preceding month, as far back as you would like to compare data for. The following months will be much easier, as you can simply select <code>Last month</code> on the 1st of each month.</li>
           <li>Name each CSV after the month name, ie. <code>january.csv</code>.</li>
-          <li>After you collect all the CSVs, you will want to drag them to the <code>/budget_breakdown</code> folder.</li>
+          <li>After you collect all the CSVs, you will want to drag them to the <code>/uploads</code> folder.</li>
           <li>Update the <code>data.js `months`</code> array to include/remove and months as needed depending on the files you are using.</li>
           <li>That's it! Open the program and start comparing your budget. Use this to help you better plan for future months, by seeing where you may need to cut back or which categories you are doing a good job in. Good luck!</li>
         </ol>
@@ -95,7 +95,7 @@
         <select id="yearSelect">Year</select>
         <select id="monthSelect">Month</select>
 
-        <input type="file" id="dropbox" onchange="handleFiles(this.files)">
+        <input type="file" name="upload" id="dropbox" accept=".csv" onchange="handleFiles(this.files[0])">
 
       </div>
     </div>

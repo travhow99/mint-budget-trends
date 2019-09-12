@@ -562,7 +562,7 @@ function formatCSV(arr, callback) {
     // skip $.get and run function
 
 
-    $.get("./budget_breakdown/" + $selected + ".csv", function(data) {
+    $.get("./uploads/" + $selected + ".csv", function(data) {
 
       data = Papa.parse(data, {header: true, skipEmptyLines: true});
       data = data['data'];

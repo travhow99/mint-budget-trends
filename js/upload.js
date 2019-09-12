@@ -51,15 +51,18 @@ function drop(e) {
 	e.stopPropagation();
 	e.preventDefault();
 
-	const dt = e.dataTransfer;
-	const files = dt.files;
+	// const dt = e.dataTransfer;
+	// const file = dt.files;
 
-	handleFiles(files);
+	const filieInput = document.getElementById('dropbox')
+	const file = filieInput.files[0];
+
+	handleFiles(file);
 }
 
 
-function handleFiles(files) {
-	console.log(files);
+function handleFiles(file) {
+	console.log(file);
 	/* const fileList = this.files;
 	console.log(fileList); */
 	const month = $('#monthSelect').val();
@@ -67,7 +70,7 @@ function handleFiles(files) {
 
 	const formData = new FormData();
 
-	formData.append('file', files);
+	formData.append('file', file);
 	formData.append('month', month);
 	formData.append('year', year);
 
