@@ -1,3 +1,32 @@
+<?php
+  $years = array_diff(scandir('uploads'), array('..', '.'));
+  // $files = scandir($)
+  $months = array();
+  foreach($years as $year) {
+    $arr = array_diff(scandir('uploads/'.$year), array('..', '.'));
+    $months[$year] = $arr;
+  }
+
+  foreach($months as $key => $year) {
+
+    $m = array_map('removeFileExtension', $year);
+    $months[$key] = $m;
+    // uksort($months[$key], "compare_months");
+  }
+
+  function removeFileExtension($str) {
+    return str_replace('.csv', '', $str);
+  }
+	
+	function compare_months($a, $b) {
+    echo $a.'<br>'.$b;
+    $monthA = strtotime($a);
+    $monthB = strtotime($b);
+
+    return $monthA - $monthB;
+	}
+?>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./css/styles.css">
@@ -20,8 +49,6 @@
 
 
 </head>
-
-
 
 <body>
   <div class="container-fluid dashboard">
@@ -102,7 +129,9 @@
 
   </div>
 
-
+<script>
+  const uploads = <?php echo json_encode($months); ?>;
+</script>
 <script type="text/javascript" src='js/app.js'></script>
 <script type="text/javascript" src='js/upload.js'></script>
 <script type="text/javascript" src="data.js"></script>

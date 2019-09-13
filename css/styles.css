@@ -53,12 +53,12 @@ ul.menu {
 
 .line canvas {max-width: 50%}
 
-select {
+/* select {
     background: dodgerblue;
     color: white!important;
     height: 28px;
     font-size: 18px;
-}
+} */
 
 #setup li {
     max-width: 720px;
@@ -102,6 +102,15 @@ select {
   min-height: 120px;
   width: 50%;
   border: 4px dashed grey;
+}
+
+#dropbox input {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
 }
 
 @media (max-width: 767px) {
