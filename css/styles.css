@@ -31,7 +31,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .sidebar {
     background-color: #78e1a1!important;
-    height: 100%;
+    height: 100vh;
+    min-height: 980px;
     overflow: auto;
 
 }

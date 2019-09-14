@@ -1,3 +1,4 @@
+return false;
 let newChart;
 
 const months = [];
@@ -414,14 +415,14 @@ $('#categoryDropdown').change(function(){
 
 
 
-function buildMonthDropdown() {
+/* function buildMonthDropdown() {
   //$('.monthDropdown').append('<option value="default">Select Your Month</option>');
   for (let key in months){
     $('.monthDropdown').append(`<option value="${key}">${key}</option>`);
   }
 }
 buildMonthDropdown();
-
+ */
 // Dashboard controls
 
 $(document).on('click', '.hideChart', function() {

@@ -21,7 +21,6 @@
     }
     $response = array(
         'status'  => 'success',
-        'error'   => false,
         'message' => 'File uploaded to '.$target_file.'!'
     );
     echo json_encode($response);
