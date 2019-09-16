@@ -6,7 +6,7 @@ $('#home').click(function () {
 });
 
 $('#monthly').click(function () {
-    buildDoughnutChart(myChart);
+    // buildDoughnutChart(myChart);
     $('.dashboard .col-sm-10').hide();
     $('.doughnut').show();
 });
@@ -56,21 +56,25 @@ async function orderMonths(obj) {
             }
             obj[year] = monthFiles;
         }
-        return obj;
+        resolve(obj);
     });
 }
 
 orderMonths(uploads)
-                    .then(obj)
-                    .catch(e => console.log('Error: ' + e));
+                    .then(res => buildMonthDropdown(res));
+                    // .then(obj)
+                    // .catch(e => console.log('Error: ' + e));
 
-const buildMonthDropdown = obj => {
+function buildMonthDropdown(obj) {
     const yearsAdded = [];
-    for (let year in Object.keys(obj)) {
+    for (let year of Object.keys(obj)) {
+        console.log(year);
         const months = obj[year];
+        console.log(months);
+
         let tmpDropdown = `<option disabled value="${year}">${year}</option>`;
 
-        for (let month in months){
+        for (let month of months){
             // $('.monthDropdown').append(`<option value="${month}">${month}</option>`);
             tmpDropdown += `<option value="${month}">${month}</option>`;
         }
@@ -83,6 +87,7 @@ const buildMonthDropdown = obj => {
         yearsAdded.push(year);
 
     }
+    console.log(yearsAdded);
 }
 
-buildMonthDropdown(uploads);
+// buildMonthDropdown(uploads);
