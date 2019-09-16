@@ -37,7 +37,6 @@ for (let x = date; x > date - 5; x--) {
 async function orderMonths(obj) {
     return new Promise((resolve, reject) => {
         for (let year in obj) {
-            console.log(year);
             const monthFiles = [];
             const foundMonths = Object.values(obj[year]);
 
@@ -61,22 +60,20 @@ async function orderMonths(obj) {
 }
 
 orderMonths(uploads)
-                    .then(res => buildMonthDropdown(res));
-                    // .then(obj)
-                    // .catch(e => console.log('Error: ' + e));
+                    .then(res => buildMonthDropdown(res))
+                    .then(res => gatherData(res))
+                    .catch(e => console.log('Error: ' + e));
 
 function buildMonthDropdown(obj) {
     const yearsAdded = [];
     for (let year of Object.keys(obj)) {
-        console.log(year);
         const months = obj[year];
-        console.log(months);
 
         let tmpDropdown = `<option disabled value="${year}">${year}</option>`;
 
         for (let month of months){
             // $('.monthDropdown').append(`<option value="${month}">${month}</option>`);
-            tmpDropdown += `<option value="${month}">${month}</option>`;
+            tmpDropdown += `<option value="${month}_${year}">${month}</option>`;
         }
 
         if (year < yearsAdded[yearsAdded.length - 1]) {
@@ -85,9 +82,60 @@ function buildMonthDropdown(obj) {
             $('.monthDropdown').prepend(tmpDropdown);
         }
         yearsAdded.push(year);
+    }
+    return obj;
+}
+
+// Take object
+// for each year
+// get each month from array
+// Build master array fo data
+async function gatherData(obj) {
+    const spendingData = {};
+    return new Promise((resolve, reject) => {
+  
+      for (let year of Object.keys(obj)) {
+          const months = obj[year];
+          spendingData[year] = {};
+
+        for (let month of months) {
+            spendingData[year][month] = {};
+            let filePath = `./uploads/${year}/${month.toLowerCase()}.csv`;
+            Papa.parse(filePath, {
+                header: true, 
+                download: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    spendingData[year][month] = {};
+                    results.data.map(a => {
+                        let {Category, Spending} = a;
+                        spendingData[year][month][Category] = dollarToNum(Spending);
+                    });
+                    // console.log(res);
+                    
+                    // spendingData[year][month] = results.data;
+                }
+            });
+        }
+
+      }
+      console.log(spendingData);
+
+    });
+}
+
+function gatherCategories(obj) {
+    for (let year of Object.keys(obj)) {
+
+      for (let month of months) {
+
+      }
 
     }
-    console.log(yearsAdded);
+}
+
+function dollarToNum(str) {
+    return parseFloat(str.replace(/[,\$]/g, ''));
 }
 
 // buildMonthDropdown(uploads);

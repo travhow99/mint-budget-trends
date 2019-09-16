@@ -42,7 +42,8 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.6.1/papaparse.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.6.1/papaparse.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.0.2/papaparse.min.js"></script>
 
   <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
   <script src="https://d3js.org/d3-fetch.v1.min.js"></script>

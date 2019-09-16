@@ -1,4 +1,3 @@
-return false;
 let newChart;
 
 const months = [];
@@ -31,15 +30,6 @@ months["august"] = august;
 months["september"] = september;
 months["october"] = october;
 months["november"] = november;
-
-/* Build file uploader */
-function fileUpload() {
-    var x = document.createElement("INPUT");
-    x.setAttribute("type", "file");
-    $('#uploadButton').append(x);
-}
-
-
 
 
 /* doughnut chart */
@@ -164,14 +154,20 @@ var lineChartDemo = new Chart(cty, {
 });
 
 
+// Take object
+// for each year
+// get each month from array
+// Build master array fo data
+async function gatherData(obj) {
+  return new Promise((resolve, reject) => {
 
-async function gatherData(arr) {
-  return new Promise(function(resolve, reject) {
+    for (let year of Object.keys(obj)) {
+      console.log(year);
+    }
 
-
-    let counter = 0;
+    // let counter = 0;
     // Loop through months to populate months with all data
-    for (let key in arr) {
+/*     for (let key in arr) {
 
       $.get("./uploads/" + key + ".csv", function(data) {
         let destructured = {};
@@ -224,6 +220,7 @@ async function gatherData(arr) {
 
       });
     }
+ */    
   });
 }
 gatherData(months)
