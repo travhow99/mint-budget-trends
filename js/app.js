@@ -62,6 +62,7 @@ async function orderMonths(obj) {
 orderMonths(uploads)
                     .then(res => buildMonthDropdown(res))
                     .then(res => gatherData(res))
+                    .then(res => gatherCategories(res))
                     .catch(e => console.log('Error: ' + e));
 
 function buildMonthDropdown(obj) {
@@ -99,17 +100,19 @@ async function gatherData(obj) {
           spendingData[year] = {};
 
         for (let month of months) {
-            spendingData[year][month] = {};
-            let filePath = `./uploads/${year}/${month.toLowerCase()}.csv`;
+            let m = month.toLowerCase();
+
+            spendingData[year][m] = {};
+            let filePath = `./uploads/${year}/${m}.csv`;
             Papa.parse(filePath, {
                 header: true, 
                 download: true,
                 skipEmptyLines: true,
                 complete: function(results) {
-                    spendingData[year][month] = {};
                     results.data.map(a => {
                         let {Category, Spending} = a;
-                        spendingData[year][month][Category] = dollarToNum(Spending);
+                        let cat = stringifyCategory(Category);
+                        spendingData[year][m][cat] = dollarToNum(Spending);
                     });
                     // console.log(res);
                     
@@ -119,19 +122,60 @@ async function gatherData(obj) {
         }
 
       }
-      console.log(spendingData);
-
+      resolve(spendingData);
     });
 }
 
 function gatherCategories(obj) {
+    console.log(obj);
+
+    for (let year in obj) {
+        let months = obj[year];
+
+        console.log(Object.keys(months));
+        console.log(Object.entries(months))
+
+        let entries = Object.entries(months);
+
+        for (let m of entries) {
+            console.log(Object.keys(m[1]));
+            for (let x of m) {
+                console.log(x)
+                if (typeof(x) === 'object') {
+                    console.log(x)
+                    let cats = {...x}
+                    console.log(cats);
+                    console.log(Object.getOwnPropertyNames(x))
+                }
+            }
+        }
+
+        return;
+        
+        for (let m of Object.keys(months)) {
+            console.log(m)
+            let val = months[m];
+            console.log(val)
+        }
+    }
+
+    return;
+
     for (let year of Object.keys(obj)) {
+        // const months = Object.keys(obj[year]);
+        const months = obj[year];
+        console.log(months)
+        console.log(Object.entries(months))
 
-      for (let month of months) {
-
-      }
+        for (let month in months) {
+            // const month = month;
+        }
 
     }
+}
+
+function stringifyCategory(cat) {
+    return cat.replace(/\s/g, '_').toLowerCase();
 }
 
 function dollarToNum(str) {
