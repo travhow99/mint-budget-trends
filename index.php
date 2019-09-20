@@ -92,7 +92,7 @@
           <div id="chart1">
             <h3>Monthly Spending Breakdown</h3>
             <select class="monthDropdown"></select>
-            <canvas id="myChart" width="400" height="400"></canvas>
+            <canvas id="doughnutChart" width="400" height="400"></canvas>
           </div>
         </div>
         <div class="col-sm-5 equal">
@@ -134,7 +134,7 @@
   </div>
 
 	<script>
-	const uploads = <?php echo json_encode($months); ?>;
+		const uploads = <?php echo json_encode($months); ?>;
 	</script>
 	
 	<script src="includes/js/Chart.bundle.js"></script>

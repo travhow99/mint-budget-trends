@@ -17,6 +17,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Anton', sans-serif!important;
 }
 
+option:disabled {
+  background: lightgray;
+}
+
 .text-left {
   text-align: left!important;
 }

@@ -529,16 +529,7 @@ function compileData(chart, arr) {
 //console.log(myChart['data']);
 
 
-// Dashboard controls
-$('#monthly').click(function() {
-  $('.dashboard .col-sm-10').hide();
-  $('.doughnut').show();
-});
 
-$('#category').click(function() {
-  $('.dashboard .col-sm-10').hide();
-  $('.line').show();
-});
 
 function buildMonthDropdown() {
   for (let key in months){

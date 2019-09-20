@@ -5,33 +5,6 @@ const totals = [];
 const spendingLabels = [];
 const spendingTotals = {};
 
-
-const january = [];
-const february = [];
-const march = [];
-const april = [];
-const may = [];
-const june = [];
-const july = [];
-const august = [];
-const september = [];
-const october = [];
-const november = [];
-
-// Refector to make months into array?
-months["january"] = january;
-months["february"] = february;
-months["march"] = march;
-months["april"] = april;
-months["may"] = may;
-months["june"] = june;
-months["july"] = july;
-months["august"] = august;
-months["september"] = september;
-months["october"] = october;
-months["november"] = november;
-
-
 /* doughnut chart */
 var ctx = document.getElementById("myChart").getContext('2d');
 console.log(ctx);
@@ -83,7 +56,7 @@ const chartColors = [
               'rgba(40, 2, 127, 0.2)',
               'rgba(135, 236, 217, 0.2)',
               'rgba(69, 179, 193, 0.2)'
-            ];
+];
 const chartBorders = [
               'rgba(255, 99, 132, 1)',
               'rgba(54, 162, 235, 1)',
@@ -99,7 +72,7 @@ const chartBorders = [
               'rgba(40, 2, 127, 1)',
               'rgba(135, 236, 217, 1)',
               'rgba(69, 179, 193, 1)'
-            ];
+];
 
 /** Line chart attempt */
 //this is data for the line charts
