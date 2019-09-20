@@ -32,22 +32,25 @@
   <link rel="stylesheet" href="./css/styles.css">
   <link href="https://fonts.googleapis.com/css?family=Anton|Raleway" rel="stylesheet">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="includes/css/bootstrap.min.css">
 
-  <script src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" data-auto-replace-svg="nest"></script>
+  <!-- <script src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" data-auto-replace-svg="nest"></script> -->
   <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!--   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
 
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.6.1/papaparse.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.0.2/papaparse.min.js"></script>
 
   <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
   <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+ -->
 
+	<script src="includes/js/jquery-3.4.1.min.js"></script>
+	<script src="includes/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -130,11 +133,17 @@
 
   </div>
 
-<script>
-  const uploads = <?php echo json_encode($months); ?>;
-</script>
-<script type="text/javascript" src='js/app.js'></script>
-<script type="text/javascript" src='js/upload.js'></script>
-<!-- <script type="text/javascript" src="data.js"></script> -->
+	<script>
+	const uploads = <?php echo json_encode($months); ?>;
+	</script>
+	
+	<script src="includes/js/Chart.bundle.js"></script>
+	<script src="includes/js/d3-dsv.v1.min.js"></script>
+	<script src="includes/js/d3-fetch.v1.min.js"></script>
+	<script src="includes/js/papaparse.min.js"></script>
+
+	<script type="text/javascript" src='js/app.js'></script>
+	<script type="text/javascript" src='js/upload.js'></script>
+	<!-- <script type="text/javascript" src="data.js"></script> -->
 
 </body>

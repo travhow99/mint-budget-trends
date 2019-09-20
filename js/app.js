@@ -59,32 +59,37 @@ async function orderMonths(obj) {
     });
 }
 
+// Make full promise chain?
 orderMonths(uploads)
-                    .then(res => buildMonthDropdown(res))
-                    .then(res => gatherData(res))
-                    .then(res => gatherCategories(res))
+                    .then((res) => buildMonthDropdown(res))
+                    .then((res) => gatherData(res))
+                    .then((obj) => gatherCategories(obj))
+                    .then(console.log)
                     .catch(e => console.log('Error: ' + e));
 
-function buildMonthDropdown(obj) {
-    const yearsAdded = [];
-    for (let year of Object.keys(obj)) {
-        const months = obj[year];
+/* async */ function buildMonthDropdown(obj) {
+    // return new Promise((resolve, reject) => {
+        const yearsAdded = [];
+        for (let year of Object.keys(obj)) {
+            const months = obj[year];
 
-        let tmpDropdown = `<option disabled value="${year}">${year}</option>`;
+            let tmpDropdown = `<option disabled value="${year}">${year}</option>`;
 
-        for (let month of months){
-            // $('.monthDropdown').append(`<option value="${month}">${month}</option>`);
-            tmpDropdown += `<option value="${month}_${year}">${month}</option>`;
+            for (let month of months){
+                // $('.monthDropdown').append(`<option value="${month}">${month}</option>`);
+                tmpDropdown += `<option value="${month}_${year}">${month}</option>`;
+            }
+
+            if (year < yearsAdded[yearsAdded.length - 1]) {
+                $('.monthDropdown').append(tmpDropdown);
+            } else {
+                $('.monthDropdown').prepend(tmpDropdown);
+            }
+            yearsAdded.push(year);
         }
-
-        if (year < yearsAdded[yearsAdded.length - 1]) {
-            $('.monthDropdown').append(tmpDropdown);
-        } else {
-            $('.monthDropdown').prepend(tmpDropdown);
-        }
-        yearsAdded.push(year);
-    }
-    return obj;
+        return obj;
+        // resolve(obj);
+    // });
 }
 
 // Take object
@@ -126,52 +131,87 @@ async function gatherData(obj) {
     });
 }
 
-function gatherCategories(obj) {
-    console.log(obj);
+// Function is logging before data is ready
+// Needs to be async
+async function gatherCategories(obj) {
+    const categories = [];
+    // let data = await Object.entries(obj);
+    const breakdown = Object.values(obj);
+    await breakdown.forEach((year) => {
+        console.log(Object.values(year));
+        const months = Object.values(year);
+        
+        months.forEach((m) => {
+            const cats = Object.keys(m);
+            console.log(m);
 
-    for (let year in obj) {
-        let months = obj[year];
-
-        console.log(Object.keys(months));
-        console.log(Object.entries(months))
-
-        let entries = Object.entries(months);
-
-        for (let m of entries) {
-            console.log(Object.keys(m[1]));
-            for (let x of m) {
-                console.log(x)
-                if (typeof(x) === 'object') {
-                    console.log(x)
-                    let cats = {...x}
-                    console.log(cats);
-                    console.log(Object.getOwnPropertyNames(x))
+            cats.forEach((cat) => {
+                if (categories.indexOf(cat) >= 0) {
+                    console.log('dup')
+                    return;
                 }
+                categories.push(cat);
+            })
+        })
+    })
+    console.log(categories);
+
+
+    
+    return categories;
+
+    return new Promise((resolve, reject) => {
+
+        for (let year in data) {
+            let months = data[year];
+
+            console.log(Object.keys(months));
+            console.log(Object.entries(months))
+
+            let entries = Object.entries(months);
+
+            console.log(entries);
+            for (let m in entries) {
+                console.log(entries[m][1])
+            }
+            return;
+
+            for (let m of entries) {
+                console.log(Object.keys(m[1]));
+                for (let x of m) {
+                    console.log(x)
+                    if (typeof(x) === 'object') {
+                        console.log(x)
+                        let cats = {...x}
+                        console.log(cats);
+                        console.log(Object.getOwnPropertyNames(x))
+                    }
+                }
+            }
+
+            return;
+            
+            for (let m of Object.keys(months)) {
+                console.log(m)
+                let val = months[m];
+                console.log(val)
             }
         }
 
         return;
-        
-        for (let m of Object.keys(months)) {
-            console.log(m)
-            let val = months[m];
-            console.log(val)
+
+        for (let year of Object.keys(obj)) {
+            // const months = Object.keys(obj[year]);
+            const months = obj[year];
+            console.log(months)
+            console.log(Object.entries(months))
+
+            for (let month in months) {
+                // const month = month;
+            }
+
         }
-    }
-
-    return;
-
-    for (let year of Object.keys(obj)) {
-        // const months = Object.keys(obj[year]);
-        const months = obj[year];
-        console.log(months)
-        console.log(Object.entries(months))
-
-        for (let month in months) {
-            // const month = month;
-        }
-
-    }
+    });
 }
 
 function stringifyCategory(cat) {
