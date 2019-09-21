@@ -102,12 +102,13 @@ function buildMonthDropdown(obj) {
 // Build master array fo data
 async function gatherData(obj) {
     const spendingData = {};
+    const totals = {};
     return new Promise((resolve, reject) => {
 
         for (let year of Object.keys(obj)) {
             const months = obj[year];
             spendingData[year] = {};
-
+            totals[year] = {};
             // Promise.all here
             (async function () {
                 // map through month
@@ -116,6 +117,8 @@ async function gatherData(obj) {
                     const m = month.toLowerCase();
 
                     spendingData[year][m] = {};
+                    totals[year][m] = {};
+
                     const filePath = `./uploads/${year}/${m}.csv`;
 
                     await Papa.parse(filePath, {
@@ -126,7 +129,11 @@ async function gatherData(obj) {
                             results.data.map(a => {
                                 let { Category, Spending } = a;
                                 let cat = stringifyCategory(Category);
-                                spendingData[year][m][cat] = dollarToNum(Spending);
+                                if (cat === 'total') {
+                                    totals[year][m] = dollarToNum(Spending);
+                                } else {
+                                    spendingData[year][m][cat] = dollarToNum(Spending);
+                                }
                             });
                         }
                     })
@@ -158,7 +165,7 @@ async function gatherData(obj) {
              */
         }
         console.log(spendingData);
-        state = { spendingData, ...state };
+        state = { spendingData, totals, ...state };
         console.log(state);
         resolve(spendingData);
         reject(error);
@@ -197,6 +204,8 @@ function gatherCategories(obj) {
 }
 
 // Chart Functions
+var doughnutChart, lineChart;
+
 function initiateDoughnut() {
     const chartColors = [
         'rgba(255, 99, 132, 0.2)',
@@ -231,6 +240,11 @@ function initiateDoughnut() {
         'rgba(69, 179, 193, 0.8)'
     ];
 
+    let DoughnutData = {
+        labels: [],
+
+    }
+
     const $selected = $('.monthDropdown').val();
     let [month, year] = splitMonthAndYear($selected);
     console.log(month, year);
@@ -249,7 +263,7 @@ function initiateDoughnut() {
     var ctx = document.getElementById("doughnutChart").getContext('2d');
     console.log(ctx);
 
-    var doughnutChart = new Chart(ctx, {
+    doughnutChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: labels,
@@ -264,6 +278,7 @@ function initiateDoughnut() {
             // datasets: []
         },
         options: {
+            responsive: true,
             scales: {
                 yAxes: [{
                     display: false,
@@ -284,18 +299,48 @@ function initiateDoughnut() {
                         return data.labels[tooltipItem[0].index];
                     }
                 }
-            },
- */        }
+            }, */
+        }
     });
 
     /** Start doughnut */
 
+}
 
+const updateDoughnutChart = function() {
+    const $selected = $('.monthDropdown').val();
+    let [month, year] = splitMonthAndYear($selected);
+    console.log(month, year);
+
+    let labels = Object.keys(state.spendingData[year][month]);
+    
+    labels = labels.map((x) => formatLabels(x));
+    labels.pop();
+    console.log(labels);
+    
+    const data = Object.values(state.spendingData[year][month]);
+    data.pop();
+    console.log(data)
+
+
+    console.log('updating?')
+    doughnutChart.data.labels = labels;
+    doughnutChart.data.datasets[0].data = data;
+    doughnutChart.data.datasets.label = `${month} spending`;
+    console.log(doughnutChart.data);
+    doughnutChart.update();
 
 }
 
 $('.monthDropdown').on('change', function() {
-    initiateDoughnut();
+    // If no chart yet
+    if (!doughnutChart) {
+        // initiate
+        initiateDoughnut();
+    } else {
+        // Update chart
+        updateDoughnutChart();
+    }
 });
 
 function buildLineChart(chart, chartObj) {
