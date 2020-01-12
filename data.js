@@ -336,6 +336,7 @@ function compareMonths() {
 
 
 $(document).on('click', '.center', function() {
+  console.log('clicky');
   if (!$(this).hasClass('added')) {
     $('#chart2').empty().append(`<div class="hideChart">X</div>
     <canvas id="newChart" width="400" height="400"></canvas>

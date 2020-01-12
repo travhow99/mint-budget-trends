@@ -41,12 +41,15 @@ function handleFiles(file) {
 
 	fetch('backend/import.php', {
 		method: 'POST',
-		/* headers: {
-
-		}, */
 		body: formData
 	})
 	.then(response => response.json())
-	.then(success => console.log(success))
+	.then(success => {
+		console.log(success);
+		if (success.status === 'success') {
+			$('#dropbox').val('');
+			alert('success!');
+		}
+	})
 	.catch(e => console.log(e));
 }

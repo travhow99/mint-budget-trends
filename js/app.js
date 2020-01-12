@@ -204,9 +204,9 @@ function gatherCategories(obj) {
 }
 
 // Chart Functions
-var doughnutChart, lineChart;
+var doughnutChart, doughnutChart2, lineChart;
 
-function initiateDoughnut() {
+function initiateDoughnut(chart = 'doughnutChart') {
     const chartColors = [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',
@@ -260,55 +260,105 @@ function initiateDoughnut() {
     console.log(data)
 
     /* doughnut chart */
-    var ctx = document.getElementById("doughnutChart").getContext('2d');
+    var ctx = document.getElementById(chart).getContext('2d');
     console.log(ctx);
 
-    doughnutChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: `${month} spending`,
-                data: data,
-                backgroundColor: chartColors,
-                borderColor: chartBorders,
-            }],
-
-            //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            // datasets: []
-        },
-        options: {
-            responsive: true,
-            scales: {
-                yAxes: [{
-                    display: false,
-                }]
+    if (chart === 'doughnutChart') {
+        doughnutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: `${month} spending`,
+                    data: data,
+                    backgroundColor: chartColors,
+                    borderColor: chartBorders,
+                }],
+    
+                //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                // datasets: []
             },
-            // Add percentages to tooltips
-/*             tooltips: {
-                callbacks: {
-                    label(tooltipItem, data) {
-                        var dataset = data.datasets[tooltipItem.datasetIndex];
-                        var meta = dataset._meta[Object.keys(dataset._meta)[0]];
-                        var total = meta.total;
-                        var currentValue = dataset.data[tooltipItem.index];
-                        var percentage = parseFloat((currentValue / total * 100).toFixed(1));
-                        return currentValue + ' (' + percentage + '%)';
-                    },
-                    title(tooltipItem, data) {
-                        return data.labels[tooltipItem[0].index];
+            options: {
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        display: false,
+                    }]
+                },
+                // Add percentages to tooltips
+                tooltips: {
+                    callbacks: {
+                        label(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var meta = dataset._meta[Object.keys(dataset._meta)[0]];
+                            var total = meta.total;
+                            var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                            return currentValue + ' (' + percentage + '%)';
+                        },
+                        title(tooltipItem, data) {
+                            return data.labels[tooltipItem[0].index];
+                        }
                     }
-                }
-            }, */
-        }
-    });
+                },
+            }
+        });        
+    } else {
+        doughnutChart2 = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: `${month} spending`,
+                    data: data,
+                    backgroundColor: chartColors,
+                    borderColor: chartBorders,
+                }],
+    
+                //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                // datasets: []
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        display: false,
+                    }]
+                },
+                // Add percentages to tooltips
+                tooltips: {
+                    callbacks: {
+                        label(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var meta = dataset._meta[Object.keys(dataset._meta)[0]];
+                            var total = meta.total;
+                            var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                            return currentValue + ' (' + percentage + '%)';
+                        },
+                        title(tooltipItem, data) {
+                            return data.labels[tooltipItem[0].index];
+                        }
+                    }
+                },
+            }
+        });
+
+    }
+
 
     /** Start doughnut */
 
 }
 
-const updateDoughnutChart = function() {
-    const $selected = $('.monthDropdown').val();
+const updateDoughnutChart = function(chart) {
+    let $selected;
+    if (chart === doughnutChart) {
+        $selected = $('.monthDropdown').val();
+    } else {
+        $selected = $('.monthDropdown2').val();
+    }
+    
     let [month, year] = splitMonthAndYear($selected);
     console.log(month, year);
 
@@ -324,13 +374,29 @@ const updateDoughnutChart = function() {
 
 
     console.log('updating?')
-    doughnutChart.data.labels = labels;
-    doughnutChart.data.datasets[0].data = data;
-    doughnutChart.data.datasets.label = `${month} spending`;
-    console.log(doughnutChart.data);
-    doughnutChart.update();
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = data;
+    chart.data.datasets.label = `${month} spending`;
+    console.log(chart.data);
+    chart.update();
 
 }
+
+$(document).on('click', '.center', function() {
+    console.log('clicky');
+    if (!$(this).hasClass('added')) {
+      $('#chart2').empty().append(`<div class="hideChart">X</div>
+      <canvas id="newChart" width="400" height="400"></canvas>
+    `);
+  
+    //   compareMonths();
+      initiateDoughnut('newChart');
+      $('#chart2').addClass('added');
+      $('.monthDropdown').clone().removeClass('monthDropdown').addClass('monthDropdown2').prependTo('#chart2');
+      $('.hideChart').show();
+    }
+  
+});  
 
 $('.monthDropdown').on('change', function() {
     // If no chart yet
@@ -339,8 +405,13 @@ $('.monthDropdown').on('change', function() {
         initiateDoughnut();
     } else {
         // Update chart
-        updateDoughnutChart();
+        updateDoughnutChart(doughnutChart);
     }
+});
+
+$('body').on('change', '.monthDropdown2', function() {
+    console.log('change');
+    updateDoughnutChart(doughnutChart2);
 });
 
 function buildLineChart(chart, chartObj) {
