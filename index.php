@@ -37,7 +37,7 @@
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
   <link rel="stylesheet" href="includes/css/bootstrap.min.css">
 
-  <script src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" data-auto-replace-svg="nest"></script>
+  <script src="includes/js/fontawesome.js" data-auto-replace-svg="nest"></script>
   <!-- Latest compiled JavaScript -->
 <!--   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -144,6 +144,5 @@
 
 	<script type="text/javascript" src='js/app.js'></script>
 	<script type="text/javascript" src='js/upload.js'></script>
-	<!-- <script type="text/javascript" src="data.js"></script> -->
 
 </body>

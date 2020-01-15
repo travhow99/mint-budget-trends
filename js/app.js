@@ -14,6 +14,8 @@ $('#monthly').click(function () {
 });
 
 $('#category').click(function () {
+    buildLineChartLabels(state.spendingData);
+
     $('.dashboard .col-sm-10').hide();
     $('.line').show();
 });
@@ -69,7 +71,7 @@ orderMonths(uploads)
     })
     // .then((res) => gatherData(res))
     // .then((data) => gatherCategories(data))
-    .then(console.log)
+    // .then((data) => buildCategoryDropdown(data))
     .catch(e => console.log('Error: ' + e));
 
 function buildMonthDropdown(obj) {
@@ -129,40 +131,14 @@ async function gatherData(obj) {
                             results.data.map(a => {
                                 let { Category, Spending } = a;
                                 let cat = stringifyCategory(Category);
-                                if (cat === 'total') {
-                                    totals[year][m] = dollarToNum(Spending);
-                                } else {
-                                    spendingData[year][m][cat] = dollarToNum(Spending);
-                                }
+                                
+                                spendingData[year][m][cat] = dollarToNum(Spending);
                             });
                         }
                     })
 
                 });
             })();
-
-            /*             for (let month of months) {
-                            let m = month.toLowerCase();
-            
-                            spendingData[year][m] = {};
-                            let filePath = `./uploads/${year}/${m}.csv`;
-                            Papa.parse(filePath, {
-                                header: true,
-                                download: true,
-                                skipEmptyLines: true,
-                                complete(results) {
-                                    results.data.map(a => {
-                                        let { Category, Spending } = a;
-                                        let cat = stringifyCategory(Category);
-                                        spendingData[year][m][cat] = dollarToNum(Spending);
-                                    });
-                                    // console.log(res);
-            
-                                    // spendingData[year][month] = results.data;
-                                }
-                            });
-                        }
-             */
         }
         console.log(spendingData);
         state = { spendingData, totals, ...state };
@@ -250,11 +226,11 @@ function initiateDoughnut(chart = 'doughnutChart') {
     console.log(month, year);
 
     let labels = Object.keys(state.spendingData[year][month]);
-    
+
     labels = labels.map((x) => formatLabels(x));
     labels.pop();
     console.log(labels);
-    
+
     const data = Object.values(state.spendingData[year][month]);
     data.pop();
     console.log(data)
@@ -274,7 +250,7 @@ function initiateDoughnut(chart = 'doughnutChart') {
                     backgroundColor: chartColors,
                     borderColor: chartBorders,
                 }],
-    
+
                 //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
                 // datasets: []
             },
@@ -302,7 +278,7 @@ function initiateDoughnut(chart = 'doughnutChart') {
                     }
                 },
             }
-        });        
+        });
     } else {
         doughnutChart2 = new Chart(ctx, {
             type: 'doughnut',
@@ -314,7 +290,7 @@ function initiateDoughnut(chart = 'doughnutChart') {
                     backgroundColor: chartColors,
                     borderColor: chartBorders,
                 }],
-    
+
                 //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
                 // datasets: []
             },
@@ -351,54 +327,49 @@ function initiateDoughnut(chart = 'doughnutChart') {
 
 }
 
-const updateDoughnutChart = function(chart) {
+const updateDoughnutChart = function (chart) {
     let $selected;
     if (chart === doughnutChart) {
         $selected = $('.monthDropdown').val();
     } else {
         $selected = $('.monthDropdown2').val();
     }
-    
+
     let [month, year] = splitMonthAndYear($selected);
-    console.log(month, year);
 
     let labels = Object.keys(state.spendingData[year][month]);
-    
+
     labels = labels.map((x) => formatLabels(x));
     labels.pop();
-    console.log(labels);
-    
+
     const data = Object.values(state.spendingData[year][month]);
     data.pop();
-    console.log(data)
 
-
-    console.log('updating?')
     chart.data.labels = labels;
     chart.data.datasets[0].data = data;
     chart.data.datasets.label = `${month} spending`;
-    console.log(chart.data);
+
     chart.update();
 
 }
 
-$(document).on('click', '.center', function() {
+$(document).on('click', '.center', function () {
     console.log('clicky');
     if (!$(this).hasClass('added')) {
-      $('#chart2').empty().append(`<div class="hideChart">X</div>
+        $('#chart2').empty().append(`<div class="hideChart">X</div>
       <canvas id="newChart" width="400" height="400"></canvas>
     `);
-  
-    //   compareMonths();
-      initiateDoughnut('newChart');
-      $('#chart2').addClass('added');
-      $('.monthDropdown').clone().removeClass('monthDropdown').addClass('monthDropdown2').prependTo('#chart2');
-      $('.hideChart').show();
-    }
-  
-});  
 
-$('.monthDropdown').on('change', function() {
+        //   compareMonths();
+        initiateDoughnut('newChart');
+        $('#chart2').addClass('added');
+        $('.monthDropdown').clone().removeClass('monthDropdown').addClass('monthDropdown2').prependTo('#chart2');
+        $('.hideChart').show();
+    }
+
+});
+
+$('.monthDropdown').on('change', function () {
     // If no chart yet
     if (!doughnutChart) {
         // initiate
@@ -409,67 +380,193 @@ $('.monthDropdown').on('change', function() {
     }
 });
 
-$('body').on('change', '.monthDropdown2', function() {
+$('body').on('change', '.monthDropdown2', function () {
     console.log('change');
     updateDoughnutChart(doughnutChart2);
+});
+
+var lineChartData = {
+    // This will be full of months
+    datasets: [{
+      //fillColor: "#560620",
+      strokeColor: "blue",
+      strokeLineWidth: 18,
+      pointColor: "white",
+      // Map through all data to find matching categories for label
+      label: 'default',
+      backgroundColor: 'transparent',
+      borderColor: 'lightblue',
+  
+      // mapped data
+      //data: [20, 90, 140, 25, 53, 67, 47, 98, 30, 80, 20, 40, 10, 60],
+    }]
+  };
+  
+  // then i just duplicated the chart specific options
+  var cty = document.getElementById("lineChart").getContext("2d");
+  var lineChart = new Chart(cty, {
+    type: 'line',
+    label: 'test',
+    data: lineChartData,
+    pointDotRadius: 3,
+    bezierCurve: true,
+    datasetFill: false,
+    datasetStroke: true,
+    scaleShowVerticalLines: false,
+    scaleShowHorizontalLines: false,
+    pointDotStrokeWidth: 4,
+    //fillColor: "rgba(220,220,220,0.2)",
+    scaleGridLineColor: "blue",
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }],
+            xAxes: [{
+              ticks: {
+                autoSkip: false
+              }
+            }]
+        }
+    }
+  
+  });
+  
+
+$('#categoryDropdown').change(function () {
+    buildLineChart(lineChart, lineChartData);
 });
 
 function buildLineChart(chart, chartObj) {
     let $selected = $('#categoryDropdown').val();
     //console.log(!$('#categoryDropdown').val());
     if (!$selected) {
-        $selected = 'Total';
+        $selected = 'total';
     };
 
-    chartObj.labels = Object.keys(months);
+    console.log($selected);
+    chartObj.labels = state.months ? state.months : buildLineChartLabels(state.spendingData);
+
+    chartObj.datasets[0].label = formatLabels($selected);
+    chartObj.datasets[0].data = state.categoryData[$selected];
+
+    chart.update();
 
     // programmatically get label (category) -> use html dropdown
-    chartObj.datasets[0].label = $selected;
+    // chartObj.datasets[0].label = $selected;
 
-    if ($selected === 'Total') {
+/*     if ($selected === 'Total') {
         chartObj.datasets[0].data = totals;
     } else {
         chartObj.datasets[0].data = spendingTotals[$selected];
     }
+ */
+    // chart.update();
+}
 
-    chart.update();
+function buildLineChartLabels(obj) {
+    const labels = [];
+
+    for (let year of Object.keys(obj)) {
+        const months = Object.keys(obj[year]);
+
+        for (let month of months) {
+            labels.push(`${ucfirst(month)} ${year}`);
+        }
+    }
+    state.months = labels;
+    console.log(labels);
+    return labels;
 }
 
 // Dashboard controls
-$('#monthly').click(function() {
+$('#monthly').click(function () {
     // initiateDoughnut();
 
     $('.dashboard .col-sm-10').hide();
     $('.doughnut').show();
 });
 
-$('#category').click(function() {
+$('#category').click(function () {
     if (!state.categories) {
-        state.categories = gatherCategories(state.spendingData);
+        state.unformattedCategories = gatherCategories(state.spendingData);
         console.log(state);
+        state.categories = state.unformattedCategories.map((x) => formatLabels(x))
+
+        buildCategoryDropdown(state.categories);
     }
+
+    if (!state.categoryData) {
+        buildLineChartData();
+    }
+
+    buildLineChart(lineChart, lineChartData);
 
     $('.dashboard .col-sm-10').hide();
     $('.line').show();
 });
 
+function buildCategoryDropdown(obj) {
+    console.log(obj);
+    const values = state.unformattedCategories;
 
-const stringifyCategory = function(cat) {
+    for (let i = 0; i < obj.length; i++){
+      $('#categoryDropdown').append(`<option value="${values[i]}">${obj[i]}</option>`);
+    }
+}
+
+const buildLineChartData = function() {
+    state.categoryData = {};
+    const categories = state.unformattedCategories;
+
+    // Loop through each category
+    categories.forEach((cat) => {
+        const results = [];
+        // TODO: Simplify with reduce....
+
+
+        // Loop through state.spendingData
+        const spendingData = state.spendingData;
+        const years = Object.keys(spendingData);
+
+        years.forEach((year) => {
+            const months = Object.keys(spendingData[year]);
+
+            // Loop through each year
+            months.forEach((month) => {
+                const spending = spendingData[year][month][cat] || 0;
+                // Reduce to get month.cat
+                results.push(spending);
+            })
+        })
+        // Add to state
+        state.categoryData[cat] = results;
+
+    })
+}
+
+const stringifyCategory = function (cat) {
     return cat.replace(/\s/g, '_').toLowerCase();
 }
 
-const dollarToNum = function(str) {
+const dollarToNum = function (str) {
     return parseFloat(str.replace(/[,\$]/g, ''));
 }
 
-const splitMonthAndYear = function(str) {
+const splitMonthAndYear = function (str) {
     return str.toLowerCase().split('_');
 }
 
-const formatLabels = function(str) {
-    return str.replace(/_/g, ' ').replace(/\w\S*/g, function(txt){
+const formatLabels = function (str) {
+    return str.replace(/_/g, ' ').replace(/\w\S*/g, function (txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
+}
+
+const ucfirst = function(str) {
+    return str.replace(/^\w/, c => c.toUpperCase());
 }
 
 // buildMonthDropdown(uploads);
